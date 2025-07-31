@@ -8,7 +8,7 @@ import { Plus, Edit, Trash2, Settings } from 'lucide-react'
 export default function ConfigPage() {
   const [tiposAvaliacoes, setTiposAvaliacoes] = useState<TipoAvaliacao[]>([])
   const [tiposAlternativas, setTiposAlternativas] = useState<TipoAlternativa[]>([])
-  const [niveisD ificuldades, setNiveisDificuldades] = useState<NivelDificuldade[]>([])
+  const [niveisDificuldades, setNiveisDificuldades] = useState<NivelDificuldade[]>([])
   const [disciplinas, setDisciplinas] = useState<Disciplina[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('tipos-avaliacoes')
@@ -41,7 +41,7 @@ export default function ConfigPage() {
   const tabs = [
     { id: 'tipos-avaliacoes', label: 'Tipos de Avaliação', count: tiposAvaliacoes.length },
     { id: 'tipos-alternativas', label: 'Tipos de Alternativas', count: tiposAlternativas.length },
-    { id: 'niveis-dificuldades', label: 'Níveis de Dificuldade', count: niveisD ificuldades.length },
+    { id: 'niveis-dificuldades', label: 'Níveis de Dificuldade', count: niveisDificuldades.length },
     { id: 'disciplinas', label: 'Disciplinas', count: disciplinas.length }
   ]
 
@@ -143,7 +143,7 @@ export default function ConfigPage() {
       case 'tipos-alternativas':
         return tiposAlternativas
       case 'niveis-dificuldades':
-        return niveisD ificuldades
+        return niveisDificuldades
       case 'disciplinas':
         return disciplinas
       default:
