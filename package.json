@@ -1,0 +1,13 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "A web application",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js",
+    "build": "echo 'Build completed'"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
