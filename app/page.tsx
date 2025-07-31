@@ -3,7 +3,7 @@
 import { useAuth } from '@/contexts/AuthContext'
 import LoginForm from '@/components/auth/LoginForm'
 import Navbar from '@/components/layout/Navbar'
-import Dashboard from '@/components/dashboard/Dashboard'
+import DashboardWithNavigation from '@/components/dashboard/DashboardWithNavigation'
 import { AuthProvider } from '@/contexts/AuthContext'
 
 function HomePage() {
