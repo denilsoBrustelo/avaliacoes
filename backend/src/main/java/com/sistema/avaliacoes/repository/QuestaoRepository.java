@@ -44,4 +44,6 @@ public interface QuestaoRepository extends JpaRepository<Questao, Long> {
     long countByStatusQuestaoAndStatusTrue(StatusEnum.StatusQuestao statusQuestao);
     
     long countByDisciplinaIdAndStatusTrue(Long disciplinaId);
+
+    long countByStatusTrue();
 }
