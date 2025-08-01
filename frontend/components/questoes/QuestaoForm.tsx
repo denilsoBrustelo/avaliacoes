@@ -416,7 +416,7 @@ export default function QuestaoForm({ questao, isOpen, onClose, onSave }: Questa
                   type="button"
                   onClick={addAlternativa}
                   className="btn-secondary flex items-center text-sm"
-                  disabled={formData.alternativas?.length >= 5}
+                  disabled={(formData.alternativas?.length || 0) >= 5}
                 >
                   <Plus className="h-4 w-4 mr-1" />
                   Adicionar
