@@ -172,13 +172,8 @@ public class QuestaoController {
     @GetMapping("/estatisticas")
     @Operation(summary = "Estatísticas de questões", description = "Retorna estatísticas sobre as questões")
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<Object> obterEstatisticas() {
-        return ResponseEntity.ok(new Object() {
-            public final long totalQuestoes = questaoService.listarTodas().size();
-            public final long questoesPendentes = questaoService.contarPorStatus(StatusEnum.StatusQuestao.PENDENTE);
-            public final long questoesAprovadas = questaoService.contarPorStatus(StatusEnum.StatusQuestao.APROVADO);
-            public final long questoesCanceladas = questaoService.contarPorStatus(StatusEnum.StatusQuestao.CANCELADO);
-        });
+    public ResponseEntity<QuestaoService.QuestaoStatistics> obterEstatisticas() {
+        return ResponseEntity.ok(questaoService.getStatistics());
     }
 
     @GetMapping("/aprovadas")
