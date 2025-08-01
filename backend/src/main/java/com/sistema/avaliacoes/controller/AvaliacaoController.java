@@ -73,7 +73,7 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/professor/{professorId}")
-    @Operation(summary = "Listar avaliações por professor")
+    @Operation(summary = "Listar avaliaç��es por professor")
     @PreAuthorize("hasRole('ADMIN') or (#professorId == authentication.principal.id and hasRole('PROFESSOR'))")
     public ResponseEntity<List<Avaliacao>> listarPorProfessor(@PathVariable Long professorId) {
         return ResponseEntity.ok(avaliacaoService.listarPorProfessor(professorId));
@@ -165,13 +165,8 @@ public class AvaliacaoController {
     @GetMapping("/estatisticas")
     @Operation(summary = "Estatísticas de avaliações")
     @PreAuthorize("hasRole('ADMIN') or hasRole('PROFESSOR')")
-    public ResponseEntity<Object> obterEstatisticas() {
-        return ResponseEntity.ok(new Object() {
-            public final long totalAvaliacoes = avaliacaoService.listarTodas().size();
-            public final long avaliacoesPendentes = avaliacaoService.contarPorStatus(StatusEnum.StatusAvaliacao.PENDENTE);
-            public final long avaliacoesAprovadas = avaliacaoService.contarPorStatus(StatusEnum.StatusAvaliacao.APROVADO);
-            public final long avaliacoesCanceladas = avaliacaoService.contarPorStatus(StatusEnum.StatusAvaliacao.CANCELADO);
-        });
+    public ResponseEntity<AvaliacaoService.AvaliacaoStatistics> obterEstatisticas() {
+        return ResponseEntity.ok(avaliacaoService.getStatistics());
     }
 
     @GetMapping("/aprovadas")
