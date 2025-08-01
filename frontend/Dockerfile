@@ -1,66 +1,63 @@
-# Multi-stage build para otimizar o tamanho da imagem
+# Use Node.js 18 Alpine
 FROM node:18-alpine AS base
 
-# Instalar dependências apenas quando necessário
+# Install dependencies only when needed
 FROM base AS deps
-# Verificar documentação https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine
+# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
 RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
-# Instalar dependências baseado no package manager preferido
+# Install dependencies based on the preferred package manager
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN \
+  if [ -f package-lock.json ]; then npm ci; \
+  else echo "Warning: Lockfile not found. It is recommended to commit lockfiles to version control." && npm install; \
+  fi
 
-# Rebuild o código fonte apenas quando necessário
+# Rebuild the source code only when needed
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-# Desabilitar telemetria durante o build
-ENV NEXT_TELEMETRY_DISABLED 1
-
-# Build da aplicação
-RUN npm run build
-
-# Imagem de produção, copiar todos os arquivos e executar next
-FROM base AS runner
-WORKDIR /app
-
-# Metadados da imagem
-LABEL maintainer="sistema-avaliacoes@example.com"
-LABEL version="1.0"
-LABEL description="Frontend do Sistema de Avaliações - Next.js"
-
-# Desabilitar telemetria durante o runtime
+# Environment variables for build
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_ENV production
 
-# Criar usuário não-root para segurança
+# Next.js collects completely anonymous telemetry data about general usage.
+# Learn more here: https://nextjs.org/docs/advanced-features/automatic-static-optimization
+# Uncomment the following line in case you want to disable telemetry during the build.
+# ENV NEXT_TELEMETRY_DISABLED 1
+
+# Build the application
+RUN npm run build
+
+# Production image, copy all the files and run next
+FROM base AS runner
+WORKDIR /app
+
+ENV NODE_ENV production
+ENV NEXT_TELEMETRY_DISABLED 1
+
+# Create a non-root user
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
-# Copiar arquivos necessários
+# Copy the public folder from the project as this is not included in the build process
 COPY --from=builder /app/public ./public
 
-# Utilizar Automatic Static Optimization
-# https://nextjs.org/docs/advanced-features/automatic-static-optimization
+# Automatically leverage output traces to reduce image size
+# https://nextjs.org/docs/advanced-features/output-file-tracing
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
-# Mudar para usuário não-root
 USER nextjs
 
-# Expor porta da aplicação
 EXPOSE 3000
 
-# Variáveis de ambiente
 ENV PORT 3000
 ENV HOSTNAME "0.0.0.0"
 
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-    CMD curl -f http://localhost:3000/api/health || exit 1
-
-# Comando para executar a aplicação
+# server.js is created by next build from the standalone output
+# https://nextjs.org/docs/pages/api-reference/next-config-js/output
 CMD ["node", "server.js"]
