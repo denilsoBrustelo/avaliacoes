@@ -1,8 +1,5 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // Configuração para Docker
-  output: 'standalone',
-
   // Desabilitar verificação de tipos para resolver problemas de build no Docker
   typescript: {
     ignoreBuildErrors: true,
