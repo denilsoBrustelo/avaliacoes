@@ -44,8 +44,9 @@ RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 
 # Copy the public folder from the project as this is not included in the build process
-# Use a conditional copy to handle cases where public folder might not exist
-COPY --from=builder /app/public* ./public/ 2>/dev/null || mkdir -p ./public
+# Create public directory and copy if it exists
+RUN mkdir -p ./public
+COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
 # https://nextjs.org/docs/advanced-features/output-file-tracing
