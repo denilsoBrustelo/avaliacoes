@@ -544,22 +544,14 @@ export class UploadApiService {
     const formData = new FormData()
     formData.append('file', file)
 
-    return apiClient.post('/upload/image', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return apiClient.postFormData('/upload/image', formData)
   }
 
   static async uploadDocument(file: File) {
     const formData = new FormData()
     formData.append('file', file)
 
-    return apiClient.post('/upload/document', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-    })
+    return apiClient.postFormData('/upload/document', formData)
   }
 
   static async deleteFile(filename: string) {
