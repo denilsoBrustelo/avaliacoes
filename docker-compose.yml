@@ -1,0 +1,108 @@
+version: '3.8'
+
+services:
+  # Banco de dados MySQL para produção
+  mysql:
+    image: mysql:8.0
+    container_name: sistema-avaliacoes-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: sistema_avaliacoes
+      MYSQL_USER: sistema_user
+      MYSQL_PASSWORD: sistema_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - sistema-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+  # Backend Spring Boot
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: sistema-avaliacoes-backend
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      DB_URL: jdbc:mysql://mysql:3306/sistema_avaliacoes
+      DB_USERNAME: sistema_user
+      DB_PASSWORD: sistema_password
+      JWT_SECRET: sistema-avaliacoes-docker-secret-key-2024
+    ports:
+      - "8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - sistema-network
+    volumes:
+      - backend_uploads:/app/uploads
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Next.js
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: sistema-avaliacoes-frontend
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api
+      NEXT_PUBLIC_USE_MOCK: "false"
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - sistema-network
+
+  # Redis para cache (opcional)
+  redis:
+    image: redis:7-alpine
+    container_name: sistema-avaliacoes-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - sistema-network
+    command: redis-server --appendonly yes
+
+  # Nginx para proxy reverso (produção)
+  nginx:
+    image: nginx:alpine
+    container_name: sistema-avaliacoes-nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - frontend
+      - backend
+    networks:
+      - sistema-network
+    profiles:
+      - production
+
+volumes:
+  mysql_data:
+    driver: local
+  redis_data:
+    driver: local
+  backend_uploads:
+    driver: local
+
+networks:
+  sistema-network:
+    driver: bridge
