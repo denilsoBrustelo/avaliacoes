@@ -555,9 +555,7 @@ export class UploadApiService {
   }
 
   static async deleteFile(filename: string) {
-    return apiClient.delete('/upload/file', {
-      params: { filename }
-    })
+    return apiClient.delete(`/upload/file?filename=${encodeURIComponent(filename)}`)
   }
 
   static async getFileInfo(filename: string) {
