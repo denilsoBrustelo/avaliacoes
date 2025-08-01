@@ -24,4 +24,6 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     long countByProfessorAndStatusTrue(@Param("professorId") Long professorId);
     
     long countByStatusAvaliacaoAndStatusTrue(StatusEnum.StatusAvaliacao statusAvaliacao);
+
+    long countByStatusTrue();
 }
