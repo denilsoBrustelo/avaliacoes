@@ -129,8 +129,24 @@ export default function QuestaoForm({ questao, isOpen, onClose, onSave }: Questa
       setLoading(true)
       
       if (questao) {
-        // Atualizar questão existente
-        await QuestaoService.update(questao.id, formData)
+        // Atualizar questão existente - converter CreateQuestaoDTO para Partial<Questao>
+        const updateData: Partial<Questao> = {
+          pergunta: formData.pergunta,
+          pontuacao: formData.pontuacao,
+          arquivo_imagem: formData.arquivo_imagem,
+          resposta_correta: formData.resposta_correta,
+          ciclo: formData.ciclo,
+          fase: formData.fase,
+          tema: formData.tema,
+          habilidades: formData.habilidades,
+          alternativas: formData.alternativas?.map(alt => ({
+            ...alt,
+            id: 0, // Será atribuído pelo backend
+            data_cadastro: new Date(),
+            questao_id: questao.id
+          }))
+        }
+        await QuestaoService.update(questao.id, updateData)
       } else {
         // Criar nova questão
         await QuestaoService.create(formData)
