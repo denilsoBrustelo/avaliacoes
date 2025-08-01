@@ -69,6 +69,29 @@ public class StatusEnum {
         }
     }
 
+    public enum StatusParticipacao {
+        INSCRITO(0, "Inscrito"),
+        INICIADO(1, "Iniciado"),
+        CONCLUIDO(2, "Concluído"),
+        CANCELADO(3, "Cancelado");
+
+        private final int codigo;
+        private final String descricao;
+
+        StatusParticipacao(int codigo, String descricao) {
+            this.codigo = codigo;
+            this.descricao = descricao;
+        }
+
+        public int getCodigo() {
+            return codigo;
+        }
+
+        public String getDescricao() {
+            return descricao;
+        }
+    }
+
     public enum TipoCorrecao {
         IA('I', "Inteligência Artificial"),
         MANUAL('M', "Manual");
