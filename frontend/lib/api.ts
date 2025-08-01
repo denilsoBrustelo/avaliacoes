@@ -76,6 +76,21 @@ class ApiClient {
     return this.handleResponse<T>(response)
   }
 
+  async postFormData<T>(endpoint: string, formData: FormData): Promise<T> {
+    const headers: Record<string, string> = {}
+    if (this.token) {
+      headers['Authorization'] = `Bearer ${this.token}`
+    }
+    // Não definir Content-Type para FormData - o browser define automaticamente
+
+    const response = await fetch(`${this.baseURL}${endpoint}`, {
+      method: 'POST',
+      headers,
+      body: formData,
+    })
+    return this.handleResponse<T>(response)
+  }
+
   async put<T>(endpoint: string, data?: any): Promise<T> {
     const response = await fetch(`${this.baseURL}${endpoint}`, {
       method: 'PUT',
