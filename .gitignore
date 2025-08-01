@@ -1,0 +1,272 @@
+# Sistema de Avaliações - GitIgnore
+
+# Logs do projeto
+*.log
+*.pid
+
+# Arquivos temporários
+*.tmp
+*.temp
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# ===== FRONTEND (Next.js) =====
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/dist/
+frontend/build/
+
+# Arquivos de ambiente
+frontend/.env*.local
+frontend/.env.production
+
+# Logs do Next.js
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+
+# Runtime data
+frontend/pids
+frontend/*.pid
+frontend/*.seed
+frontend/*.pid.lock
+
+# Coverage directory used by tools like istanbul
+frontend/coverage/
+frontend/.nyc_output
+
+# Dependency directories
+frontend/node_modules/
+frontend/jspm_packages/
+
+# Optional npm cache directory
+frontend/.npm
+
+# Optional eslint cache
+frontend/.eslintcache
+
+# Optional REPL history
+frontend/.node_repl_history
+
+# Output of 'npm pack'
+frontend/*.tgz
+
+# Yarn Integrity file
+frontend/.yarn-integrity
+
+# parcel-bundler cache (https://parceljs.org/)
+frontend/.cache
+frontend/.parcel-cache
+
+# next.js build output
+frontend/.next
+
+# nuxt.js build output
+frontend/.nuxt
+
+# vuepress build output
+frontend/.vuepress/dist
+
+# Serverless directories
+frontend/.serverless
+
+# ===== BACKEND (Spring Boot) =====
+backend/target/
+backend/!.mvn/wrapper/maven-wrapper.jar
+backend/!**/src/main/**/target/
+backend/!**/src/test/**/target/
+
+# Spring Boot
+backend/.mvn/
+backend/mvnw
+backend/mvnw.cmd
+
+# STS (Spring Tool Suite)
+backend/.apt_generated
+backend/.classpath
+backend/.factorypath
+backend/.project
+backend/.settings
+backend/.springBeans
+backend/.sts4-cache
+
+# IntelliJ IDEA
+backend/.idea
+backend/*.iws
+backend/*.iml
+backend/*.ipr
+
+# NetBeans
+backend/nbproject/private/
+backend/nbbuild/
+backend/dist/
+backend/nbdist/
+backend/.nb-gradle/
+backend/build/
+backend/!**/src/main/**/build/
+backend/!**/src/test/**/build/
+
+# VS Code
+backend/.vscode/
+
+# Maven
+backend/target/
+backend/pom.xml.tag
+backend/pom.xml.releaseBackup
+backend/pom.xml.versionsBackup
+backend/pom.xml.next
+backend/release.properties
+backend/dependency-reduced-pom.xml
+backend/buildNumber.properties
+backend/.mvn/timing.properties
+
+# Avoid ignoring Maven wrapper jar file (.jar files are usually ignored)
+!backend/.mvn/wrapper/maven-wrapper.jar
+
+# Logs
+backend/logs/
+backend/*.log
+
+# H2 Database
+backend/*.db
+backend/*.mv.db
+backend/*.trace.db
+
+# Uploads
+backend/uploads/
+backend/files/
+
+# ===== DOCKER =====
+# Docker volumes
+docker-data/
+mysql-data/
+redis-data/
+
+# Docker logs
+docker-logs/
+
+# ===== IDE =====
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# Eclipse
+.metadata
+.gradle
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
+
+# ===== FERRAMENTAS =====
+# JaCoCo
+jacoco.exec
+jacoco-ut.exec
+
+# SonarQube
+.sonar/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Kubernetes
+*.kubeconfig
+
+# ===== CERTIFICADOS E CHAVES =====
+*.pem
+*.key
+*.crt
+*.p12
+*.jks
+*.keystore
+*.truststore
+
+# JWT Secrets
+jwt-secret.txt
+secrets/
+
+# ===== PRODUÇÃO =====
+# Arquivos de configuração de produção
+config/production/
+.env.production
+.env.prod
+
+# Backups
+*.sql.gz
+*.dump
+backup/
+
+# Cache
+.cache/
+cache/
+
+# ===== DOCUMENTAÇÃO =====
+# Generated docs
+docs/generated/
+docs/api/
+docs/javadoc/
+
+# ===== TESTES =====
+# Test results
+test-results/
+coverage/
+.nyc_output/
+junit.xml
+
+# ===== PACKAGE MANAGERS =====
+# NPM
+package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Yarn
+.yarn/
+.pnp.*
+
+# PNPM
+.pnpm-debug.log*
+
+# ===== MISC =====
+# Temporary folders
+tmp/
+temp/
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Custom scripts
+local-scripts/
+dev-tools/
