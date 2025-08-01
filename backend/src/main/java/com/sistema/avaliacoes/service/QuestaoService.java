@@ -150,4 +150,34 @@ public class QuestaoService {
     public List<Questao> listarPendentes() {
         return listarPorStatus(StatusEnum.StatusQuestao.PENDENTE);
     }
+
+    @Transactional(readOnly = true)
+    public QuestaoStatistics getStatistics() {
+        long totalQuestoes = questaoRepository.countByStatusTrue();
+        long questoesPendentes = contarPorStatus(StatusEnum.StatusQuestao.PENDENTE);
+        long questoesAprovadas = contarPorStatus(StatusEnum.StatusQuestao.APROVADO);
+        long questoesCanceladas = contarPorStatus(StatusEnum.StatusQuestao.CANCELADO);
+
+        return new QuestaoStatistics(totalQuestoes, questoesPendentes, questoesAprovadas, questoesCanceladas);
+    }
+
+    public static class QuestaoStatistics {
+        private long totalQuestoes;
+        private long questoesPendentes;
+        private long questoesAprovadas;
+        private long questoesCanceladas;
+
+        public QuestaoStatistics(long totalQuestoes, long questoesPendentes, long questoesAprovadas, long questoesCanceladas) {
+            this.totalQuestoes = totalQuestoes;
+            this.questoesPendentes = questoesPendentes;
+            this.questoesAprovadas = questoesAprovadas;
+            this.questoesCanceladas = questoesCanceladas;
+        }
+
+        // Getters
+        public long getTotalQuestoes() { return totalQuestoes; }
+        public long getQuestoesPendentes() { return questoesPendentes; }
+        public long getQuestoesAprovadas() { return questoesAprovadas; }
+        public long getQuestoesCanceladas() { return questoesCanceladas; }
+    }
 }
