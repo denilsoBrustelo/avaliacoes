@@ -141,4 +141,34 @@ public class UsuarioService implements UserDetailsService {
         usuario.setStatus(!usuario.getStatus());
         return usuarioRepository.save(usuario);
     }
+
+    @Transactional(readOnly = true)
+    public UsuarioStatistics getStatistics() {
+        long totalUsuarios = usuarioRepository.count();
+        long totalAdmins = contarPorRole(UserRole.ROLE_ADMIN);
+        long totalProfessores = contarPorRole(UserRole.ROLE_PROFESSOR);
+        long totalAlunos = contarPorRole(UserRole.ROLE_ALUNO);
+
+        return new UsuarioStatistics(totalUsuarios, totalAdmins, totalProfessores, totalAlunos);
+    }
+
+    public static class UsuarioStatistics {
+        private long totalUsuarios;
+        private long totalAdmins;
+        private long totalProfessores;
+        private long totalAlunos;
+
+        public UsuarioStatistics(long totalUsuarios, long totalAdmins, long totalProfessores, long totalAlunos) {
+            this.totalUsuarios = totalUsuarios;
+            this.totalAdmins = totalAdmins;
+            this.totalProfessores = totalProfessores;
+            this.totalAlunos = totalAlunos;
+        }
+
+        // Getters
+        public long getTotalUsuarios() { return totalUsuarios; }
+        public long getTotalAdmins() { return totalAdmins; }
+        public long getTotalProfessores() { return totalProfessores; }
+        public long getTotalAlunos() { return totalAlunos; }
+    }
 }
