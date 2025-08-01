@@ -517,4 +517,55 @@ export class RespostaApiService {
   static async delete(id: number) {
     return await apiClient.delete<void>(`/respostas/${id}`)
   }
+
+  static async getEvaluationStatistics(avaliacaoId: number) {
+    return await apiClient.get<any>(`/respostas/estatisticas/avaliacao/${avaliacaoId}`)
+  }
+}
+
+// Serviço de Upload
+export class UploadApiService {
+  static async uploadImage(file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return apiClient.post('/upload/image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  }
+
+  static async uploadDocument(file: File) {
+    const formData = new FormData()
+    formData.append('file', file)
+
+    return apiClient.post('/upload/document', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+  }
+
+  static async deleteFile(filename: string) {
+    return apiClient.delete('/upload/file', {
+      params: { filename }
+    })
+  }
+
+  static async getFileInfo(filename: string) {
+    return apiClient.get(`/upload/info/${filename}`)
+  }
+
+  static getFileUrl(filename: string) {
+    return `${API_BASE_URL}/files/${filename}`
+  }
+
+  static getImageUrl(filename: string) {
+    return `${API_BASE_URL}/files/image/${filename}`
+  }
+
+  static getDocumentUrl(filename: string) {
+    return `${API_BASE_URL}/files/document/${filename}`
+  }
 }
