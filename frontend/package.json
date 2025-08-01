@@ -7,7 +7,14 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf .next out dist",
+    "analyze": "ANALYZE=true npm run build",
+    "export": "next export",
+    "docker:build": "docker build -t sistema-avaliacoes-frontend .",
+    "docker:run": "docker run -p 3000:3000 sistema-avaliacoes-frontend"
   },
   "dependencies": {
     "next": "14.0.4",
