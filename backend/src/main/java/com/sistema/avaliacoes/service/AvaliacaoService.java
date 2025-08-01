@@ -155,4 +155,34 @@ public class AvaliacaoService {
     public List<Avaliacao> listarPendentes() {
         return listarPorStatus(StatusEnum.StatusAvaliacao.PENDENTE);
     }
+
+    @Transactional(readOnly = true)
+    public AvaliacaoStatistics getStatistics() {
+        long totalAvaliacoes = avaliacaoRepository.countByStatusTrue();
+        long avaliacoesPendentes = contarPorStatus(StatusEnum.StatusAvaliacao.PENDENTE);
+        long avaliacoesAprovadas = contarPorStatus(StatusEnum.StatusAvaliacao.APROVADO);
+        long avaliacoesCanceladas = contarPorStatus(StatusEnum.StatusAvaliacao.CANCELADO);
+
+        return new AvaliacaoStatistics(totalAvaliacoes, avaliacoesPendentes, avaliacoesAprovadas, avaliacoesCanceladas);
+    }
+
+    public static class AvaliacaoStatistics {
+        private long totalAvaliacoes;
+        private long avaliacoesPendentes;
+        private long avaliacoesAprovadas;
+        private long avaliacoesCanceladas;
+
+        public AvaliacaoStatistics(long totalAvaliacoes, long avaliacoesPendentes, long avaliacoesAprovadas, long avaliacoesCanceladas) {
+            this.totalAvaliacoes = totalAvaliacoes;
+            this.avaliacoesPendentes = avaliacoesPendentes;
+            this.avaliacoesAprovadas = avaliacoesAprovadas;
+            this.avaliacoesCanceladas = avaliacoesCanceladas;
+        }
+
+        // Getters
+        public long getTotalAvaliacoes() { return totalAvaliacoes; }
+        public long getAvaliacoesPendentes() { return avaliacoesPendentes; }
+        public long getAvaliacoesAprovadas() { return avaliacoesAprovadas; }
+        public long getAvaliacoesCanceladas() { return avaliacoesCanceladas; }
+    }
 }
