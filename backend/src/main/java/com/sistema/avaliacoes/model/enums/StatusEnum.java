@@ -50,7 +50,8 @@ public class StatusEnum {
         PENDENTE(0, "Pendente"),
         INICIADO(1, "Iniciado"),
         EM_ANDAMENTO(2, "Em Andamento"),
-        CONCLUIDO(3, "Concluído");
+        CONCLUIDO(3, "Concluído"),
+        CANCELADO(4, "Cancelado");
 
         private final int codigo;
         private final String descricao;
