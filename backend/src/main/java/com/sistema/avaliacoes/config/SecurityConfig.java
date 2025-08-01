@@ -29,6 +29,9 @@ public class SecurityConfig {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private CorsConfigurationSource corsConfigurationSource;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
