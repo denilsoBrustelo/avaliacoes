@@ -128,13 +128,8 @@ public class UsuarioController {
     @GetMapping("/estatisticas")
     @Operation(summary = "Estatísticas de usuários", description = "Retorna estatísticas sobre os usuários")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Object> obterEstatisticas() {
-        return ResponseEntity.ok(new Object() {
-            public final long totalUsuarios = usuarioService.listarTodos().size();
-            public final long totalAdmins = usuarioService.contarPorRole(UserRole.ROLE_ADMIN);
-            public final long totalProfessores = usuarioService.contarPorRole(UserRole.ROLE_PROFESSOR);
-            public final long totalAlunos = usuarioService.contarPorRole(UserRole.ROLE_ALUNO);
-        });
+    public ResponseEntity<UsuarioService.UsuarioStatistics> obterEstatisticas() {
+        return ResponseEntity.ok(usuarioService.getStatistics());
     }
 
     // Métodos de conversão
