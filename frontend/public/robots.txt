@@ -1,0 +1,9 @@
+# https://www.robotstxt.org/robotstxt.html
+User-agent: *
+Allow: /
+
+# Host
+Host: https://sistema-avaliacoes.com
+
+# Sitemap
+Sitemap: https://sistema-avaliacoes.com/sitemap.xml
