@@ -221,7 +221,7 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
             </h3>
             <button
               type="button"
-              onClick={loadConfiguracoes}
+              onClick={connectToBackend}
               className="ml-4 text-xs bg-blue-500 text-white px-2 py-1 rounded"
             >
               Conectar Backend
