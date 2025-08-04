@@ -7,6 +7,7 @@ import { CheckCircle, XCircle, Clock } from 'lucide-react'
 export default function BackendStatus() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
   const [isChecking, setIsChecking] = useState(false)
+  const [lastError, setLastError] = useState<string | null>(null)
 
   const checkConnection = async () => {
     setIsChecking(true)
