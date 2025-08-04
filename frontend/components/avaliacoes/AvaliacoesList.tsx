@@ -36,7 +36,23 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
       setLoading(true)
       setError(null)
 
-      // Try to load data directly - let the API calls handle the errors
+      // Test backend connection first
+      const isConnected = await apiClient.testConnection()
+
+      if (!isConnected) {
+        // Show user-friendly message instead of error
+        alert('❌ Backend não está rodando!\n\n' +
+              '💡 Para conectar ao backend:\n' +
+              '1. Abra um terminal\n' +
+              '2. Execute: cd backend && mvn spring-boot:run\n' +
+              '3. Aguarde até ver "Started SistemaAvaliacoesApplication"\n' +
+              '4. Clique novamente em "Conectar Backend"')
+
+        // Keep current fallback data
+        return
+      }
+
+      // Backend is available - load real data
       const [avaliacoesData, statsData] = await Promise.all([
         AvaliacaoApiService.getAll(),
         AvaliacaoApiService.getStatistics()
@@ -44,17 +60,22 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
 
       setAvaliacoes(avaliacoesData)
       setStatistics(statsData)
+      setError(null)
+
+      // Show success message
+      alert('✅ Conectado ao backend com sucesso!\n\n' +
+            `📊 Dados carregados:\n` +
+            `• ${avaliacoesData.length} avaliações\n` +
+            `• ${statsData.totalAvaliacoes} total no sistema`)
+
     } catch (error) {
-      console.warn('Backend não acessível. Usando dados de fallback.')
-      setError(new Error('Backend não está acessível. Verifique se o servidor está rodando na porta 8080.'))
-      // Set fallback empty data
-      setAvaliacoes([])
-      setStatistics({
-        totalAvaliacoes: 0,
-        avaliacoesAprovadas: 0,
-        avaliacoesPendentes: 0,
-        avaliacoesCanceladas: 0
-      })
+      console.warn('Erro ao conectar com backend:', error)
+      setError(new Error('Erro ao conectar com o backend. Verifique se está rodando na porta 8080.'))
+
+      // Show detailed error
+      alert('⚠️ Erro de conexão!\n\n' +
+            'O backend pode estar iniciando ou com problemas.\n' +
+            'Verifique o console do backend para mais detalhes.')
     } finally {
       setLoading(false)
     }
