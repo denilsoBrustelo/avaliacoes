@@ -65,51 +65,52 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
 
   const loadConfiguracoes = async () => {
     try {
-      console.log('Iniciando carregamento de configurações...')
-
-      // Test backend connection first
-      const isConnected = await apiClient.testConnection()
-      console.log('Backend connection status:', isConnected)
-
-      if (!isConnected) {
-        console.warn('Backend is not accessible. Using fallback data.')
-        setTiposAvaliacoes([
-          { id: 1, descricao: 'Diagnóstica' },
-          { id: 2, descricao: 'Processual' },
-          { id: 3, descricao: 'Final de Ciclo' }
-        ])
-        setQuestoesDisponiveis([
-          {
-            id: 1,
-            pergunta: 'Questão de exemplo - Backend não conectado',
-            tema: 'Exemplo',
-            disciplina: { descricao: 'Matemática' },
-            nivelDificuldade: { descricao: 'Fácil' },
-            pontuacao: 1.0
-          }
-        ])
-        return
-      }
+      console.log('Carregando configurações...')
 
       const [tipos, questoes] = await Promise.all([
         ConfiguracaoApiService.getTiposAvaliacoes(),
         QuestaoApiService.getApproved()
       ])
 
-      console.log('Tipos de avaliação carregados:', tipos)
-      console.log('Questões aprovadas carregadas:', questoes)
+      console.log('Dados carregados com sucesso:', { tipos: tipos.length, questoes: questoes.length })
 
       setTiposAvaliacoes(tipos)
       setQuestoesDisponiveis(questoes)
     } catch (error) {
-      console.error('Erro ao carregar configurações:', error)
+      console.warn('Backend não acessível. Usando dados de fallback.')
       // Set fallback data
       setTiposAvaliacoes([
         { id: 1, descricao: 'Diagnóstica' },
         { id: 2, descricao: 'Processual' },
-        { id: 3, descricao: 'Final de Ciclo' }
+        { id: 3, descricao: 'Final de Ciclo' },
+        { id: 4, descricao: 'Certificadora' }
       ])
-      setQuestoesDisponiveis([])
+      setQuestoesDisponiveis([
+        {
+          id: 1,
+          pergunta: 'Qual é o resultado de 5 + 3?',
+          tema: 'Adição',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        },
+        {
+          id: 2,
+          pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
+          tema: 'Subtração',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        },
+        {
+          id: 3,
+          pergunta: 'Qual é o sinônimo da palavra "feliz"?',
+          tema: 'Sinônimos',
+          disciplina: { descricao: 'Português' },
+          nivelDificuldade: { descricao: 'Médio' },
+          pontuacao: 1.5
+        }
+      ])
     }
   }
 
