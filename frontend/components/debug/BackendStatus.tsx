@@ -28,8 +28,8 @@ export default function BackendStatus() {
 
   useEffect(() => {
     checkConnection()
-    // Check every 30 seconds
-    const interval = setInterval(checkConnection, 30000)
+    // Check every 60 seconds (less frequent to reduce noise)
+    const interval = setInterval(checkConnection, 60000)
     return () => clearInterval(interval)
   }, [])
 
