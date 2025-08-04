@@ -26,6 +26,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   const loadData = async () => {
     try {
       setLoading(true)
+      setError(null)
 
       // Test backend connection first
       console.log('Testing backend connection...')
@@ -33,15 +34,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
       console.log('Backend connection status:', isConnected)
 
       if (!isConnected) {
-        console.warn('Backend is not accessible. Using fallback data.')
-        setAvaliacoes([])
-        setStatistics({
-          totalAvaliacoes: 0,
-          avaliacoesAprovadas: 0,
-          avaliacoesPendentes: 0,
-          avaliacoesCanceladas: 0
-        })
-        return
+        throw new Error('Backend não está acessível. Verifique se o servidor está rodando na porta 8080.')
       }
 
       const [avaliacoesData, statsData] = await Promise.all([
@@ -53,6 +46,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
       setStatistics(statsData)
     } catch (error) {
       console.error('Erro ao carregar avaliações:', error)
+      setError(error as Error)
       // Set fallback empty data
       setAvaliacoes([])
       setStatistics({
