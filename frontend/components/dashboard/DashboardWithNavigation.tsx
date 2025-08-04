@@ -7,6 +7,7 @@ import Dashboard from './Dashboard'
 import UsersPage from '../admin/UsersPage'
 import ConfigPage from '../admin/ConfigPage'
 import QuestoesPage from '../questoes/QuestoesPage'
+import AvaliacoesPage from '../avaliacoes/AvaliacoesPage'
 
 export default function DashboardWithNavigation() {
   const { hasRole } = useAuth()
