@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface TipoAlternativaRepository extends JpaRepository<TipoAlternativa, Long> {
     
     List<TipoAlternativa> findByStatusTrueOrderByDescricao();
+
+    Optional<TipoAlternativa> findByDescricao(String descricao);
     
     boolean existsByDescricaoAndStatusTrue(String descricao);
 }
