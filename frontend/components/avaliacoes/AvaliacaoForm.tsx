@@ -253,10 +253,10 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
             </h3>
             <button
               type="button"
-              onClick={testarConectividade}
+              onClick={loadConfiguracoes}
               className="ml-4 text-xs bg-blue-500 text-white px-2 py-1 rounded"
             >
-              Testar
+              Conectar Backend
             </button>
           </div>
           <button
