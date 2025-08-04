@@ -1,6 +1,7 @@
 'use client'
 
 import { AlertTriangle, RefreshCw } from 'lucide-react'
+import BackendInstructions from '../debug/BackendInstructions'
 
 interface ErrorFallbackProps {
   error?: Error | null
