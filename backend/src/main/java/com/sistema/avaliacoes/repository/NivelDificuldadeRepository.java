@@ -10,6 +10,8 @@ import java.util.List;
 public interface NivelDificuldadeRepository extends JpaRepository<NivelDificuldade, Long> {
     
     List<NivelDificuldade> findByStatusTrueOrderByDescricao();
+
+    Optional<NivelDificuldade> findByDescricao(String descricao);
     
     boolean existsByDescricaoAndStatusTrue(String descricao);
 }
