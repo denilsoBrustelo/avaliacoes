@@ -156,13 +156,27 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
           <h2 className="text-2xl font-bold text-gray-900">Avaliações</h2>
           <p className="text-gray-600">Gerencie todas as avaliações do sistema</p>
         </div>
-        <button
-          onClick={onNew}
-          className="btn-primary flex items-center"
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          Nova Avaliação
-        </button>
+        <div className="flex space-x-3">
+          <button
+            onClick={loadData}
+            className="btn-secondary flex items-center"
+            disabled={loading}
+          >
+            {loading ? (
+              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-gray-600 mr-2"></div>
+            ) : (
+              <CheckCircle className="h-4 w-4 mr-2" />
+            )}
+            Conectar Backend
+          </button>
+          <button
+            onClick={onNew}
+            className="btn-primary flex items-center"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Nova Avaliação
+          </button>
+        </div>
       </div>
 
       {/* Statistics */}
