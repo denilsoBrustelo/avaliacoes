@@ -32,10 +32,7 @@ public class SecurityConfig {
     @Autowired
     private CorsConfigurationSource corsConfigurationSource;
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
