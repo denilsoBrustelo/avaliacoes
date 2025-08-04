@@ -24,15 +24,41 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   const loadData = async () => {
     try {
       setLoading(true)
+
+      // Test backend connection first
+      console.log('Testing backend connection...')
+      const isConnected = await apiClient.testConnection()
+      console.log('Backend connection status:', isConnected)
+
+      if (!isConnected) {
+        console.warn('Backend is not accessible. Using fallback data.')
+        setAvaliacoes([])
+        setStatistics({
+          totalAvaliacoes: 0,
+          avaliacoesAprovadas: 0,
+          avaliacoesPendentes: 0,
+          avaliacoesCanceladas: 0
+        })
+        return
+      }
+
       const [avaliacoesData, statsData] = await Promise.all([
         AvaliacaoApiService.getAll(),
         AvaliacaoApiService.getStatistics()
       ])
-      
+
       setAvaliacoes(avaliacoesData)
       setStatistics(statsData)
     } catch (error) {
       console.error('Erro ao carregar avaliações:', error)
+      // Set fallback empty data
+      setAvaliacoes([])
+      setStatistics({
+        totalAvaliacoes: 0,
+        avaliacoesAprovadas: 0,
+        avaliacoesPendentes: 0,
+        avaliacoesCanceladas: 0
+      })
     } finally {
       setLoading(false)
     }
