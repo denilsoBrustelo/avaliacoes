@@ -52,6 +52,9 @@ public class SecurityConfig {
                 .requestMatchers("/swagger-ui/**").permitAll()
                 .requestMatchers("/swagger-ui.html").permitAll()
                 .requestMatchers("/v3/api-docs/**").permitAll()
+                // Temporário para desenvolvimento - endpoints básicos de configuração
+                .requestMatchers("/configuracoes/tipos-avaliacoes").permitAll()
+                .requestMatchers("/questoes/aprovadas").permitAll()
                 
                 // Endpoints administrativos
                 .requestMatchers("/usuarios/**").hasRole("ADMIN")
