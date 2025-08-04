@@ -67,6 +67,30 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
     try {
       console.log('Iniciando carregamento de configurações...')
 
+      // Test backend connection first
+      const isConnected = await apiClient.testConnection()
+      console.log('Backend connection status:', isConnected)
+
+      if (!isConnected) {
+        console.warn('Backend is not accessible. Using fallback data.')
+        setTiposAvaliacoes([
+          { id: 1, descricao: 'Diagnóstica' },
+          { id: 2, descricao: 'Processual' },
+          { id: 3, descricao: 'Final de Ciclo' }
+        ])
+        setQuestoesDisponiveis([
+          {
+            id: 1,
+            pergunta: 'Questão de exemplo - Backend não conectado',
+            tema: 'Exemplo',
+            disciplina: { descricao: 'Matemática' },
+            nivelDificuldade: { descricao: 'Fácil' },
+            pontuacao: 1.0
+          }
+        ])
+        return
+      }
+
       const [tipos, questoes] = await Promise.all([
         ConfiguracaoApiService.getTiposAvaliacoes(),
         QuestaoApiService.getApproved()
@@ -79,6 +103,13 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
       setQuestoesDisponiveis(questoes)
     } catch (error) {
       console.error('Erro ao carregar configurações:', error)
+      // Set fallback data
+      setTiposAvaliacoes([
+        { id: 1, descricao: 'Diagnóstica' },
+        { id: 2, descricao: 'Processual' },
+        { id: 3, descricao: 'Final de Ciclo' }
+      ])
+      setQuestoesDisponiveis([])
     }
   }
 
