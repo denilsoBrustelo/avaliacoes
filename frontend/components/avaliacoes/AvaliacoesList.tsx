@@ -17,6 +17,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<string>('ALL')
   const [statistics, setStatistics] = useState<any>(null)
+  const [error, setError] = useState<Error | null>(null)
 
   useEffect(() => {
     loadData()
