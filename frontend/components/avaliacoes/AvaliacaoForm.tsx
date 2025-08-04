@@ -177,34 +177,13 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
 
     if (!validateForm()) return
 
-    try {
-      setLoading(true)
-      
-      const avaliacaoData = {
-        tipoAvaliacao: { id: parseInt(formData.tipoAvaliacaoId) },
-        instrucao: formData.instrucao
-      }
-
-      const questoesIds = questoesSelecionadas.map(q => q.id)
-
-      if (avaliacao) {
-        // Atualizar avaliação existente
-        await AvaliacaoApiService.update(avaliacao.id, avaliacaoData)
-        // Atualizar questões
-        await AvaliacaoApiService.addQuestions(avaliacao.id, questoesIds)
-      } else {
-        // Criar nova avaliação
-        await AvaliacaoApiService.create(avaliacaoData, questoesIds)
-      }
-      
-      onSave()
-      onClose()
-    } catch (error) {
-      console.error('Erro ao salvar avaliação:', error)
-      setErrors({ submit: 'Erro ao salvar avaliação. Tente novamente.' })
-    } finally {
+    // In offline mode, just show success message
+    setLoading(true)
+    setTimeout(() => {
       setLoading(false)
-    }
+      alert('Modo Offline: Avaliação simulada criada com sucesso!\n\nPara salvar no backend, conecte-se ao servidor.')
+      onClose()
+    }, 1000)
   }
 
   const adicionarQuestao = (questao: any) => {
