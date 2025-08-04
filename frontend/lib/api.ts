@@ -48,7 +48,10 @@ class ApiClient {
   private async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const errorText = await response.text()
-      console.error(`API Error: HTTP ${response.status}: ${errorText}`)
+      // Only log errors that aren't connection issues
+      if (response.status !== 0) {
+        console.warn(`API Error: HTTP ${response.status}: ${errorText}`)
+      }
       throw new Error(`HTTP ${response.status}: ${errorText}`)
     }
 
