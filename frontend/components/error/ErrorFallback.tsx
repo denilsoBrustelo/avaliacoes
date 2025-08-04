@@ -10,11 +10,11 @@ interface ErrorFallbackProps {
   message?: string
 }
 
-export default function ErrorFallback({ 
-  error, 
-  onRetry, 
-  title = "Ops! Algo deu errado",
-  message = "Não foi possível carregar os dados. Verifique se o backend está rodando."
+export default function ErrorFallback({
+  error,
+  onRetry,
+  title = "Backend Desconectado",
+  message = "O sistema está funcionando com dados de exemplo. Inicie o backend para funcionalidade completa."
 }: ErrorFallbackProps) {
   return (
     <div className="min-h-64 flex items-center justify-center">
