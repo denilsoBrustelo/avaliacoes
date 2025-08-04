@@ -28,12 +28,8 @@ export default function BackendStatus() {
     }
   }
 
-  useEffect(() => {
-    checkConnection()
-    // Check every 60 seconds (less frequent to reduce noise)
-    const interval = setInterval(checkConnection, 60000)
-    return () => clearInterval(interval)
-  }, [])
+  // Removed automatic connection checking to prevent fetch errors
+  // Connection is now only checked when user clicks the "Reconectar" button
 
   if (isChecking && isConnected === null) {
     return (
