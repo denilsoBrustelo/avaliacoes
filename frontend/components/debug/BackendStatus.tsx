@@ -17,12 +17,28 @@ export default function BackendStatus() {
     try {
       const connected = await apiClient.testConnection()
       setIsConnected(connected)
-      if (!connected) {
-        setLastError('Health endpoint returned non-200 status')
+
+      if (connected) {
+        alert('✅ Backend conectado com sucesso!\n\n' +
+              '🔗 URL: http://localhost:8080/api/health\n' +
+              '📚 Agora você pode usar todas as funcionalidades.')
+        setLastError(null)
+      } else {
+        setLastError('Backend não responde na porta 8080')
+        alert('❌ Backend não está rodando!\n\n' +
+              '💡 Para iniciar o backend:\n' +
+              '1. Abra um terminal\n' +
+              '2. Execute: cd backend && mvn spring-boot:run\n' +
+              '3. Aguarde a mensagem "Started SistemaAvaliacoesApplication"')
       }
     } catch (error) {
       setIsConnected(false)
-      setLastError(error instanceof Error ? error.message : 'Unknown error')
+      const errorMsg = error instanceof Error ? error.message : 'Erro desconhecido'
+      setLastError(errorMsg)
+
+      alert('⚠️ Erro ao testar conexão!\n\n' +
+            `Detalhes: ${errorMsg}\n\n` +
+            'Verifique se o backend está rodando na porta 8080.')
     } finally {
       setIsChecking(false)
     }
