@@ -19,8 +19,16 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   const [statistics, setStatistics] = useState<any>(null)
   const [error, setError] = useState<Error | null>(null)
 
+  // Load fallback data immediately instead of trying to connect to backend
   useEffect(() => {
-    loadData()
+    setAvaliacoes([])
+    setStatistics({
+      totalAvaliacoes: 0,
+      avaliacoesAprovadas: 0,
+      avaliacoesPendentes: 0,
+      avaliacoesCanceladas: 0
+    })
+    setLoading(false)
   }, [])
 
   const loadData = async () => {
