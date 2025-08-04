@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AvaliacaoApiService } from '@/lib/api'
+import { AvaliacaoApiService, apiClient } from '@/lib/api'
 import { Plus, Edit, Eye, Search, Filter, FileText, Users, CheckCircle, XCircle, Clock } from 'lucide-react'
 
 interface AvaliacoesListProps {
