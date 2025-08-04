@@ -98,4 +98,93 @@ public class DataInitializer implements CommandLineRunner {
             usuarioRepository.save(aluno);
         }
     }
+
+    private void initializeDisciplinas() {
+        if (disciplinaRepository.count() == 0) {
+            disciplinaRepository.save(new Disciplina("Matemática"));
+            disciplinaRepository.save(new Disciplina("Português"));
+            disciplinaRepository.save(new Disciplina("História"));
+            disciplinaRepository.save(new Disciplina("Geografia"));
+            disciplinaRepository.save(new Disciplina("Ciências"));
+            disciplinaRepository.save(new Disciplina("Inglês"));
+        }
+    }
+
+    private void initializeNiveisDificuldade() {
+        if (nivelDificuldadeRepository.count() == 0) {
+            nivelDificuldadeRepository.save(new NivelDificuldade("Fácil"));
+            nivelDificuldadeRepository.save(new NivelDificuldade("Médio"));
+            nivelDificuldadeRepository.save(new NivelDificuldade("Difícil"));
+        }
+    }
+
+    private void initializeSeries() {
+        if (serieRepository.count() == 0) {
+            serieRepository.save(new Serie("1º Ano"));
+            serieRepository.save(new Serie("2º Ano"));
+            serieRepository.save(new Serie("3º Ano"));
+            serieRepository.save(new Serie("4º Ano"));
+            serieRepository.save(new Serie("5º Ano"));
+            serieRepository.save(new Serie("6º Ano"));
+            serieRepository.save(new Serie("7º Ano"));
+            serieRepository.save(new Serie("8º Ano"));
+            serieRepository.save(new Serie("9º Ano"));
+        }
+    }
+
+    private void initializeQuestoesSample() {
+        if (questaoRepository.count() == 0) {
+            // Buscar dados básicos
+            Disciplina matematica = disciplinaRepository.findByDescricao("Matemática").orElse(null);
+            Disciplina portugues = disciplinaRepository.findByDescricao("Português").orElse(null);
+            NivelDificuldade facil = nivelDificuldadeRepository.findByDescricao("Fácil").orElse(null);
+            NivelDificuldade medio = nivelDificuldadeRepository.findByDescricao("Médio").orElse(null);
+            Serie quinta = serieRepository.findByDescricao("5º Ano").orElse(null);
+            TipoAlternativa multiplaEscolha = tipoAlternativaRepository.findByDescricao("Múltipla Escolha").orElse(null);
+            Usuario professor = usuarioRepository.findByEmail("professor@sistema.com").orElse(null);
+
+            if (matematica != null && facil != null && quinta != null && multiplaEscolha != null && professor != null) {
+                // Questão de Matemática 1
+                Questao questao1 = new Questao();
+                questao1.setPergunta("Qual é o resultado de 5 + 3?");
+                questao1.setTema("Adição");
+                questao1.setDisciplina(matematica);
+                questao1.setNivelDificuldade(facil);
+                questao1.setSerie(quinta);
+                questao1.setTipoAlternativa(multiplaEscolha);
+                questao1.setResponsavel(professor);
+                questao1.setPontuacao(BigDecimal.valueOf(1.0));
+                questao1.setAprovada(true);
+                questaoRepository.save(questao1);
+
+                // Questão de Matemática 2
+                Questao questao2 = new Questao();
+                questao2.setPergunta("Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?");
+                questao2.setTema("Subtração");
+                questao2.setDisciplina(matematica);
+                questao2.setNivelDificuldade(facil);
+                questao2.setSerie(quinta);
+                questao2.setTipoAlternativa(multiplaEscolha);
+                questao2.setResponsavel(professor);
+                questao2.setPontuacao(BigDecimal.valueOf(1.0));
+                questao2.setAprovada(true);
+                questaoRepository.save(questao2);
+            }
+
+            if (portugues != null && medio != null && quinta != null && multiplaEscolha != null && professor != null) {
+                // Questão de Português
+                Questao questao3 = new Questao();
+                questao3.setPergunta("Qual é o sinônimo da palavra 'feliz'?");
+                questao3.setTema("Sinônimos");
+                questao3.setDisciplina(portugues);
+                questao3.setNivelDificuldade(medio);
+                questao3.setSerie(quinta);
+                questao3.setTipoAlternativa(multiplaEscolha);
+                questao3.setResponsavel(professor);
+                questao3.setPontuacao(BigDecimal.valueOf(1.5));
+                questao3.setAprovada(true);
+                questaoRepository.save(questao3);
+            }
+        }
+    }
 }
