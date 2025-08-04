@@ -43,6 +43,10 @@ public class DataInitializer implements CommandLineRunner {
         initializeTiposAvaliacoes();
         initializeTiposAlternativas();
         initializeUsuarios();
+        initializeDisciplinas();
+        initializeNiveisDificuldade();
+        initializeSeries();
+        initializeQuestoesSample();
     }
 
     private void initializeTiposAvaliacoes() {
