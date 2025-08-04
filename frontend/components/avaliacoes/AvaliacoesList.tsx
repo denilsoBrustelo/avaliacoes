@@ -137,6 +137,17 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
     )
   }
 
+  if (error) {
+    return (
+      <ErrorFallback
+        error={error}
+        onRetry={loadData}
+        title="Erro ao carregar avaliações"
+        message="Não foi possível conectar ao backend."
+      />
+    )
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
