@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AvaliacaoApiService, ConfiguracaoApiService, QuestaoApiService } from '@/lib/api'
+import { AvaliacaoApiService, ConfiguracaoApiService, QuestaoApiService, apiClient } from '@/lib/api'
 import { X, Save, Plus, Trash2, Search, FileText } from 'lucide-react'
 
 interface AvaliacaoFormProps {
