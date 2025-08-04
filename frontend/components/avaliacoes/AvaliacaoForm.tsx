@@ -267,6 +267,14 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
           </button>
         </div>
 
+        {/* Offline Mode Indicator */}
+        <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+          <div className="flex items-center space-x-2 text-sm text-yellow-800">
+            <XCircle className="h-4 w-4" />
+            <span>Modo Offline - Dados de exemplo carregados</span>
+          </div>
+        </div>
+
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Dados básicos */}
