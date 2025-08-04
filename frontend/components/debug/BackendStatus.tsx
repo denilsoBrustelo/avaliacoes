@@ -46,34 +46,48 @@ export default function BackendStatus() {
 
   return (
     <div className="p-3 bg-gray-50 rounded-lg border">
-      <div className="flex items-center space-x-2 text-sm mb-2">
-        {isConnected ? (
-          <>
-            <CheckCircle className="h-4 w-4 text-green-500" />
-            <span className="text-green-700">Backend conectado</span>
-          </>
-        ) : (
-          <>
-            <XCircle className="h-4 w-4 text-red-500" />
-            <span className="text-red-700">Backend desconectado</span>
-            <button
-              onClick={checkConnection}
-              className="text-blue-600 hover:text-blue-800 underline"
-              disabled={isChecking}
-            >
-              Tentar novamente
-            </button>
-          </>
+      <div className="flex items-center justify-between mb-2">
+        <div className="flex items-center space-x-2 text-sm">
+          {isConnected ? (
+            <>
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <span className="text-green-700">Backend conectado</span>
+            </>
+          ) : (
+            <>
+              <XCircle className="h-4 w-4 text-red-500" />
+              <span className="text-red-700">Backend desconectado</span>
+              <button
+                onClick={checkConnection}
+                className="text-blue-600 hover:text-blue-800 underline"
+                disabled={isChecking}
+              >
+                Reconectar
+              </button>
+            </>
+          )}
+        </div>
+
+        {!isConnected && (
+          <button
+            onClick={() => setShowInstructions(!showInstructions)}
+            className="text-xs text-blue-600 hover:text-blue-800 underline"
+          >
+            {showInstructions ? 'Ocultar' : 'Como iniciar?'}
+          </button>
         )}
       </div>
 
       <div className="text-xs text-gray-600">
         <div>URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'}</div>
-        <div>Health check: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'}/health</div>
         {lastError && (
-          <div className="text-red-600 mt-1">Erro: {lastError}</div>
+          <div className="text-red-600 mt-1">Status: {lastError}</div>
         )}
       </div>
+
+      {!isConnected && showInstructions && (
+        <BackendInstructions />
+      )}
     </div>
   )
 }
