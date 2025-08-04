@@ -48,6 +48,7 @@ class ApiClient {
   private async handleResponse<T>(response: Response): Promise<T> {
     if (!response.ok) {
       const errorText = await response.text()
+      console.error(`API Error: HTTP ${response.status}: ${errorText}`)
       throw new Error(`HTTP ${response.status}: ${errorText}`)
     }
 
@@ -57,6 +58,19 @@ class ApiClient {
     }
 
     return {} as T
+  }
+
+  async testConnection(): Promise<boolean> {
+    try {
+      const response = await fetch(`${this.baseURL}/health`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
+      })
+      return response.ok
+    } catch (error) {
+      console.error('Backend connection failed:', error)
+      return false
+    }
   }
 
   async get<T>(endpoint: string): Promise<T> {
