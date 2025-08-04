@@ -83,6 +83,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const userWithoutPassword = { ...foundUser, senha: '' }
       setUser(userWithoutPassword)
       localStorage.setItem('user', JSON.stringify(userWithoutPassword))
+
+      // Gerar token fictício para desenvolvimento
+      const fakeToken = `mock-token-${foundUser.id}-${Date.now()}`
+      apiClient.setToken(fakeToken)
+
       setIsLoading(false)
       return true
     }
