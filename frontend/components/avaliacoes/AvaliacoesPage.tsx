@@ -4,6 +4,7 @@ import { useState } from 'react'
 import AvaliacoesList from './AvaliacoesList'
 import AvaliacaoForm from './AvaliacaoForm'
 import AvaliacaoView from './AvaliacaoView'
+import BackendStatus from '../debug/BackendStatus'
 
 export default function AvaliacoesPage() {
   const [selectedAvaliacao, setSelectedAvaliacao] = useState<any | null>(null)
