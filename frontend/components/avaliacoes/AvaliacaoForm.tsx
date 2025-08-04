@@ -187,6 +187,13 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
             <h3 className="text-lg font-medium text-gray-900">
               {avaliacao ? 'Editar Avaliação' : 'Nova Avaliação'}
             </h3>
+            <button
+              type="button"
+              onClick={testarConectividade}
+              className="ml-4 text-xs bg-blue-500 text-white px-2 py-1 rounded"
+            >
+              Testar
+            </button>
           </div>
           <button
             onClick={onClose}
