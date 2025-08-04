@@ -2,6 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { Usuario, UserRole, LoginDTO } from '@/types'
+import { apiClient } from '@/lib/api'
 
 interface AuthContextType {
   user: Usuario | null
