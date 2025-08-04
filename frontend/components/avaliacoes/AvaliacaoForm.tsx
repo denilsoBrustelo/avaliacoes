@@ -26,7 +26,39 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
 
   useEffect(() => {
     if (isOpen) {
-      loadConfiguracoes()
+      // Load fallback data immediately - no backend connection
+      setTiposAvaliacoes([
+        { id: 1, descricao: 'Diagnóstica' },
+        { id: 2, descricao: 'Processual' },
+        { id: 3, descricao: 'Final de Ciclo' },
+        { id: 4, descricao: 'Certificadora' }
+      ])
+      setQuestoesDisponiveis([
+        {
+          id: 1,
+          pergunta: 'Qual é o resultado de 5 + 3?',
+          tema: 'Adição',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        },
+        {
+          id: 2,
+          pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
+          tema: 'Subtração',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        },
+        {
+          id: 3,
+          pergunta: 'Qual é o sinônimo da palavra "feliz"?',
+          tema: 'Sinônimos',
+          disciplina: { descricao: 'Português' },
+          nivelDificuldade: { descricao: 'Médio' },
+          pontuacao: 1.5
+        }
+      ])
     }
   }, [isOpen])
 
