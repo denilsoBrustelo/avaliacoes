@@ -45,9 +45,7 @@ export default function AvaliacoesPage() {
 
   return (
     <>
-      <div className="mb-4">
-        <BackendStatus />
-      </div>
+      <OfflineBanner />
 
       <AvaliacoesList
         key={refreshKey}
