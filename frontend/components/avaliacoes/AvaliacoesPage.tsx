@@ -44,6 +44,10 @@ export default function AvaliacoesPage() {
 
   return (
     <>
+      <div className="mb-4">
+        <BackendStatus />
+      </div>
+
       <AvaliacoesList
         key={refreshKey}
         onEdit={handleEdit}
