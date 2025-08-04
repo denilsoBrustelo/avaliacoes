@@ -30,6 +30,22 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
     }
   }, [isOpen])
 
+  // Função de teste para verificar conectividade
+  const testarConectividade = async () => {
+    try {
+      console.log('Testando conectividade...')
+      const response = await fetch('http://localhost:8080/api/health')
+      const data = await response.json()
+      console.log('Backend funcionando:', data)
+
+      const response2 = await fetch('http://localhost:8080/api/configuracoes/tipos-avaliacoes')
+      const tipos = await response2.json()
+      console.log('Tipos de avaliação direto:', tipos)
+    } catch (error) {
+      console.error('Erro de conectividade:', error)
+    }
+  }
+
   useEffect(() => {
     if (avaliacao) {
       setFormData({
