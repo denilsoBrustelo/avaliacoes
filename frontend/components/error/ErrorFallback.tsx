@@ -44,14 +44,7 @@ export default function ErrorFallback({
           </button>
         )}
         
-        <div className="mt-4 text-xs text-gray-500">
-          <p>💡 Dicas para resolver:</p>
-          <ul className="text-left mt-2 space-y-1">
-            <li>• Verifique se o backend está rodando na porta 8080</li>
-            <li>• Teste: <code className="bg-gray-100 px-1 rounded">http://localhost:8080/api/health</code></li>
-            <li>• Verifique o console do navegador para mais detalhes</li>
-          </ul>
-        </div>
+        <BackendInstructions />
       </div>
     </div>
   )
