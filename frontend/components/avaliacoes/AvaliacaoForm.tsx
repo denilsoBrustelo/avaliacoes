@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { AvaliacaoApiService, ConfiguracaoApiService, QuestaoApiService, apiClient } from '@/lib/api'
-import { X, Save, Plus, Trash2, Search, FileText } from 'lucide-react'
+import { X, Save, Plus, Trash2, Search, FileText, XCircle } from 'lucide-react'
 
 interface AvaliacaoFormProps {
   avaliacao?: any | null
