@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/participantes")
+@RequestMapping("/participantes-avaliacao")
 @Tag(name = "Participantes", description = "Gestão de participantes e aplicações de avaliações")
 @CrossOrigin(origins = "http://localhost:3000")
 public class ParticipanteAvaliacaoController {
