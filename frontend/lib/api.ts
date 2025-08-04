@@ -71,7 +71,7 @@ class ApiClient {
       })
       return response.ok
     } catch (error) {
-      console.error('Backend connection failed:', error)
+      // Silently fail - we handle this in the UI
       return false
     }
   }
