@@ -15,11 +15,12 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         
-        // Permitir origens do frontend
+        // Permitir origens do frontend (mais permissivo para desenvolvimento)
         configuration.setAllowedOriginPatterns(Arrays.asList(
-            "http://localhost:3000",
-            "http://127.0.0.1:3000",
-            "https://localhost:3000"
+            "http://localhost:*",
+            "http://127.0.0.1:*",
+            "https://localhost:*",
+            "https://*.fly.dev"
         ));
         
         // Permitir todos os métodos HTTP
