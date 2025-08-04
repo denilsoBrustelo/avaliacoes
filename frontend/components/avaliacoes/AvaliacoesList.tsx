@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { AvaliacaoApiService, apiClient } from '@/lib/api'
 import { Plus, Edit, Eye, Search, Filter, FileText, Users, CheckCircle, XCircle, Clock } from 'lucide-react'
+import ErrorFallback from '../error/ErrorFallback'
 
 interface AvaliacoesListProps {
   onEdit?: (avaliacao: any) => void
