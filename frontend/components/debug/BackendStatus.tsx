@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { apiClient } from '@/lib/api'
 import { CheckCircle, XCircle, Clock } from 'lucide-react'
+import BackendInstructions from './BackendInstructions'
 
 export default function BackendStatus() {
   const [isConnected, setIsConnected] = useState<boolean | null>(null)
