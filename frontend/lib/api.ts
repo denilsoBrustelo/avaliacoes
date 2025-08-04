@@ -65,13 +65,21 @@ class ApiClient {
 
   async testConnection(): Promise<boolean> {
     try {
+      // Add timeout to prevent hanging requests
+      const controller = new AbortController()
+      const timeoutId = setTimeout(() => controller.abort(), 3000) // 3 second timeout
+
       const response = await fetch(`${this.baseURL}/health`, {
         method: 'GET',
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 'Content-Type': 'application/json' },
+        signal: controller.signal
       })
+
+      clearTimeout(timeoutId)
       return response.ok
     } catch (error) {
-      // Silently fail - we handle this in the UI
+      // Handle all types of fetch errors silently
+      // This includes network errors, timeouts, CORS issues, etc.
       return false
     }
   }
