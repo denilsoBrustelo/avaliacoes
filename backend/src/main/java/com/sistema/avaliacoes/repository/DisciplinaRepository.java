@@ -13,6 +13,8 @@ import java.util.Optional;
 public interface DisciplinaRepository extends JpaRepository<Disciplina, Long> {
     
     List<Disciplina> findByStatusTrueOrderByDescricao();
+
+    Optional<Disciplina> findByDescricao(String descricao);
     
     Optional<Disciplina> findByIdDisciplinaExterno(String idDisciplinaExterno);
     
