@@ -11,6 +11,8 @@ import java.util.Optional;
 public interface SerieRepository extends JpaRepository<Serie, Long> {
     
     List<Serie> findByStatusTrueOrderByDescricao();
+
+    Optional<Serie> findByDescricao(String descricao);
     
     Optional<Serie> findByIdSerieExterno(String idSerieExterno);
     
