@@ -29,9 +29,7 @@ public class CorsConfig {
         ));
         
         // Permitir todos os cabeçalhos
-        configuration.setAllowedHeaders(Arrays.asList(
-            "authorization", "content-type", "x-auth-token", "cache-control", "x-requested-with"
-        ));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
         
         // Permitir credenciais
         configuration.setAllowCredentials(true);
