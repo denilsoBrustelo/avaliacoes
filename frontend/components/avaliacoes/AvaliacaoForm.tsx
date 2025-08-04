@@ -49,11 +49,16 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
 
   const loadConfiguracoes = async () => {
     try {
+      console.log('Iniciando carregamento de configurações...')
+
       const [tipos, questoes] = await Promise.all([
         ConfiguracaoApiService.getTiposAvaliacoes(),
         QuestaoApiService.getApproved()
       ])
-      
+
+      console.log('Tipos de avaliação carregados:', tipos)
+      console.log('Questões aprovadas carregadas:', questoes)
+
       setTiposAvaliacoes(tipos)
       setQuestoesDisponiveis(questoes)
     } catch (error) {
