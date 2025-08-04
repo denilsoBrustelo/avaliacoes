@@ -86,52 +86,43 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
 
   const loadConfiguracoes = async () => {
     try {
-      console.log('Carregando configurações...')
+      console.log('Testando conexão com backend...')
 
+      // Test backend connection first
+      const isConnected = await apiClient.testConnection()
+
+      if (!isConnected) {
+        alert('❌ Backend não está disponível!\n\n' +
+              'Para usar dados reais do backend:\n' +
+              '1. Abra um terminal\n' +
+              '2. Execute: cd backend && mvn spring-boot:run\n' +
+              '3. Aguarde a inicialização\n' +
+              '4. Clique novamente em "Conectar Backend"\n\n' +
+              '💡 Por enquanto, usando dados de exemplo.')
+        return
+      }
+
+      // Backend is available - load real data
       const [tipos, questoes] = await Promise.all([
         ConfiguracaoApiService.getTiposAvaliacoes(),
         QuestaoApiService.getApproved()
       ])
 
-      console.log('Dados carregados com sucesso:', { tipos: tipos.length, questoes: questoes.length })
+      console.log('✅ Dados reais carregados:', { tipos: tipos.length, questoes: questoes.length })
 
       setTiposAvaliacoes(tipos)
       setQuestoesDisponiveis(questoes)
+
+      alert('✅ Conectado ao backend!\n\n' +
+            `📚 Dados carregados:\n` +
+            `• ${tipos.length} tipos de avaliação\n` +
+            `• ${questoes.length} questões aprovadas`)
+
     } catch (error) {
-      console.warn('Backend não acessível. Usando dados de fallback.')
-      // Set fallback data
-      setTiposAvaliacoes([
-        { id: 1, descricao: 'Diagnóstica' },
-        { id: 2, descricao: 'Processual' },
-        { id: 3, descricao: 'Final de Ciclo' },
-        { id: 4, descricao: 'Certificadora' }
-      ])
-      setQuestoesDisponiveis([
-        {
-          id: 1,
-          pergunta: 'Qual é o resultado de 5 + 3?',
-          tema: 'Adição',
-          disciplina: { descricao: 'Matemática' },
-          nivelDificuldade: { descricao: 'Fácil' },
-          pontuacao: 1.0
-        },
-        {
-          id: 2,
-          pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
-          tema: 'Subtração',
-          disciplina: { descricao: 'Matemática' },
-          nivelDificuldade: { descricao: 'Fácil' },
-          pontuacao: 1.0
-        },
-        {
-          id: 3,
-          pergunta: 'Qual é o sinônimo da palavra "feliz"?',
-          tema: 'Sinônimos',
-          disciplina: { descricao: 'Português' },
-          nivelDificuldade: { descricao: 'Médio' },
-          pontuacao: 1.5
-        }
-      ])
+      console.error('Erro ao conectar com backend:', error)
+      alert('⚠️ Erro de conexão!\n\n' +
+            'Verifique se o backend está rodando corretamente.\n' +
+            'Continuando com dados de exemplo.')
     }
   }
 
