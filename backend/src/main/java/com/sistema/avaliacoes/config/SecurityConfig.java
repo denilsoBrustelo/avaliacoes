@@ -55,7 +55,7 @@ public class SecurityConfig {
                 
                 // Endpoints administrativos
                 .requestMatchers("/usuarios/**").hasRole("ADMIN")
-                .requestMatchers("/configuracoes/**").hasRole("ADMIN")
+                .requestMatchers("/configuracoes/**").hasAnyRole("ADMIN", "PROFESSOR")
                 
                 // Endpoints para professores e admins
                 .requestMatchers("/questoes/**").hasAnyRole("ADMIN", "PROFESSOR")
