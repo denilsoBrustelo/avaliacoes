@@ -41,8 +41,8 @@ export default function BackendStatus() {
   }
 
   return (
-    <div className="p-3 bg-gray-50 rounded-lg border">
-      <div className="flex items-center justify-between mb-2">
+    <div className="text-center py-4">
+      <div className="inline-flex items-center space-x-3 px-4 py-2 bg-blue-50 border border-blue-200 rounded-lg">
         <div className="flex items-center space-x-2 text-sm">
           {isConnected ? (
             <>
@@ -51,38 +51,32 @@ export default function BackendStatus() {
             </>
           ) : (
             <>
-              <XCircle className="h-4 w-4 text-red-500" />
-              <span className="text-red-700">Backend desconectado</span>
-              <button
-                onClick={checkConnection}
-                className="text-blue-600 hover:text-blue-800 underline"
-                disabled={isChecking}
-              >
-                Reconectar
-              </button>
+              <XCircle className="h-4 w-4 text-blue-500" />
+              <span className="text-blue-700">Modo Offline</span>
             </>
           )}
         </div>
 
-        {!isConnected && (
-          <button
-            onClick={() => setShowInstructions(!showInstructions)}
-            className="text-xs text-blue-600 hover:text-blue-800 underline"
-          >
-            {showInstructions ? 'Ocultar' : 'Como iniciar?'}
-          </button>
-        )}
+        <button
+          onClick={checkConnection}
+          className="text-blue-600 hover:text-blue-800 underline text-sm"
+          disabled={isChecking}
+        >
+          {isChecking ? 'Verificando...' : 'Testar Conexão'}
+        </button>
+
+        <button
+          onClick={() => setShowInstructions(!showInstructions)}
+          className="text-blue-600 hover:text-blue-800 underline text-sm"
+        >
+          {showInstructions ? 'Ocultar' : 'Ajuda'}
+        </button>
       </div>
 
-      <div className="text-xs text-gray-600">
-        <div>URL: {process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api'}</div>
-        {lastError && (
-          <div className="text-red-600 mt-1">Status: {lastError}</div>
-        )}
-      </div>
-
-      {!isConnected && showInstructions && (
-        <BackendInstructions />
+      {showInstructions && (
+        <div className="mt-4">
+          <BackendInstructions />
+        </div>
       )}
     </div>
   )
