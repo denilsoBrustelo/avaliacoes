@@ -11,11 +11,16 @@ export default function BackendStatus() {
 
   const checkConnection = async () => {
     setIsChecking(true)
+    setLastError(null)
     try {
       const connected = await apiClient.testConnection()
       setIsConnected(connected)
+      if (!connected) {
+        setLastError('Health endpoint returned non-200 status')
+      }
     } catch (error) {
       setIsConnected(false)
+      setLastError(error instanceof Error ? error.message : 'Unknown error')
     } finally {
       setIsChecking(false)
     }
