@@ -26,6 +26,18 @@ public class DataInitializer implements CommandLineRunner {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private QuestaoRepository questaoRepository;
+
+    @Autowired
+    private DisciplinaRepository disciplinaRepository;
+
+    @Autowired
+    private NivelDificuldadeRepository nivelDificuldadeRepository;
+
+    @Autowired
+    private SerieRepository serieRepository;
+
     @Override
     public void run(String... args) throws Exception {
         initializeTiposAvaliacoes();
