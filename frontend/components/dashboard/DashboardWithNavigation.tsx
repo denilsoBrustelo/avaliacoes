@@ -21,6 +21,8 @@ export default function DashboardWithNavigation() {
         return hasRole(UserRole.ADMIN) ? <ConfigPage /> : <Dashboard />
       case 'questoes':
         return (hasRole(UserRole.ADMIN) || hasRole(UserRole.PROFESSOR)) ? <QuestoesPage /> : <Dashboard />
+      case 'avaliacoes':
+        return (hasRole(UserRole.ADMIN) || hasRole(UserRole.PROFESSOR)) ? <AvaliacoesPage /> : <Dashboard />
       default:
         return <Dashboard />
     }
