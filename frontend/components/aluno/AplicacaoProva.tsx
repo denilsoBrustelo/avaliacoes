@@ -140,6 +140,7 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
       }
     } catch (error) {
       console.error('Erro ao carregar dados da prova:', error)
+      setError('Erro ao carregar dados da prova. Verifique sua conexão.')
     } finally {
       setLoading(false)
     }
