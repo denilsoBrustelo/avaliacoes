@@ -8,6 +8,7 @@ import UsersPage from '../admin/UsersPage'
 import ConfigPage from '../admin/ConfigPage'
 import QuestoesPage from '../questoes/QuestoesPage'
 import AvaliacoesPage from '../avaliacoes/AvaliacoesPage'
+import MinhasProvas from '../aluno/MinhasProvas'
 
 export default function DashboardWithNavigation() {
   const { hasRole } = useAuth()
@@ -23,6 +24,8 @@ export default function DashboardWithNavigation() {
         return (hasRole(UserRole.ADMIN) || hasRole(UserRole.PROFESSOR)) ? <QuestoesPage /> : <Dashboard />
       case 'avaliacoes':
         return (hasRole(UserRole.ADMIN) || hasRole(UserRole.PROFESSOR)) ? <AvaliacoesPage /> : <Dashboard />
+      case 'minhas-provas':
+        return hasRole(UserRole.ALUNO) ? <MinhasProvas /> : <Dashboard />
       default:
         return <Dashboard />
     }
@@ -81,6 +84,19 @@ export default function DashboardWithNavigation() {
                 }`}
               >
                 Avaliações
+              </button>
+            )}
+
+            {hasRole(UserRole.ALUNO) && (
+              <button
+                onClick={() => setCurrentPage('minhas-provas')}
+                className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                  currentPage === 'minhas-provas'
+                    ? 'border-primary-500 text-primary-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                Minhas Provas
               </button>
             )}
 
