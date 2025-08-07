@@ -1,36 +1,88 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ParticipanteApiService } from '@/lib/api'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
+import { ParticipanteApiService, apiClient } from '@/lib/api'
 import { Play, CheckCircle, Clock, Calendar, FileText, AlertCircle } from 'lucide-react'
 
 export default function MinhasProvas() {
+  const { user } = useAuth()
+  const router = useRouter()
   const [provasDisponiveis, setProvasDisponiveis] = useState<any[]>([])
   const [provasEmAndamento, setProvasEmAndamento] = useState<any[]>([])
   const [provasConcluidas, setProvasConcluidas] = useState<any[]>([])
   const [statistics, setStatistics] = useState<any>(null)
   const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    loadMinhasProvas()
-  }, [])
+    if (user) {
+      loadMinhasProvas()
+    }
+  }, [user])
 
   const loadMinhasProvas = async () => {
     try {
       setLoading(true)
+      setError(null)
+
+      // Test backend connection first
+      const isConnected = await apiClient.testConnection()
+
+      if (!isConnected) {
+        // Load fallback data for demo
+        setProvasDisponiveis([
+          {
+            id: 1,
+            avaliacao: {
+              id: 1,
+              instrucao: 'Avaliação de Matemática - 1º Bimestre',
+              tipoAvaliacao: { descricao: 'Diagnóstica' },
+              responsavel: { nome: 'Prof. João Silva' }
+            },
+            dataDisponibilizacao: new Date().toISOString(),
+            prazoLimite: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
+          }
+        ])
+        setProvasEmAndamento([])
+        setProvasConcluidas([])
+        setStatistics({
+          totalProvas: 1,
+          provasFinalizadas: 0,
+          mediaGeral: 0,
+          ultimaProva: null
+        })
+        setLoading(false)
+        return
+      }
+
+      // Backend is available - load real data
       const [disponiveis, emAndamento, concluidas, stats] = await Promise.all([
         ParticipanteApiService.getAvailableExams(),
         ParticipanteApiService.getExamsInProgress(),
         ParticipanteApiService.getCompletedExams(),
-        ParticipanteApiService.getStatisticsByStudent(1) // ID do aluno logado
+        ParticipanteApiService.getStatisticsByStudent(user?.id || 1)
       ])
-      
+
       setProvasDisponiveis(disponiveis)
       setProvasEmAndamento(emAndamento)
       setProvasConcluidas(concluidas)
       setStatistics(stats)
     } catch (error) {
       console.error('Erro ao carregar provas:', error)
+      setError('Erro ao carregar dados. Usando modo offline.')
+
+      // Load fallback data on error
+      setProvasDisponiveis([])
+      setProvasEmAndamento([])
+      setProvasConcluidas([])
+      setStatistics({
+        totalProvas: 0,
+        provasFinalizadas: 0,
+        mediaGeral: 0,
+        ultimaProva: null
+      })
     } finally {
       setLoading(false)
     }
@@ -38,16 +90,23 @@ export default function MinhasProvas() {
 
   const iniciarProva = async (participanteId: number) => {
     try {
+      const isConnected = await apiClient.testConnection()
+
+      if (!isConnected) {
+        router.push(`/prova/${participanteId}`)
+        return
+      }
+
       await ParticipanteApiService.startExam(participanteId)
-      loadMinhasProvas() // Recarregar dados
+      router.push(`/prova/${participanteId}`)
     } catch (error) {
       console.error('Erro ao iniciar prova:', error)
+      alert('Erro ao iniciar prova. Tente novamente.')
     }
   }
 
   const continuarProva = (participante: any) => {
-    // Navegar para a página de aplicação da prova
-    window.location.href = `/prova/${participante.id}`
+    router.push(`/prova/${participante.id}`)
   }
 
   const getStatusColor = (status: number) => {
