@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import MinhasProvas from '@/components/aluno/MinhasProvas'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { UserRole } from '@/types'
 
 export default function MinhasProvasPage() {
   const { user } = useAuth()
