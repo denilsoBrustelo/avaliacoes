@@ -49,33 +49,22 @@ export default function MinhasProvas() {
       setLoading(true)
       setError(null)
 
-      // Test backend connection first
-      const isConnected = await apiClient.testConnection()
+      // Test backend connection with better error handling
+      let isConnected = false
+      try {
+        isConnected = await apiClient.testConnection()
+      } catch (connectionError) {
+        console.warn('Connection test failed:', connectionError)
+        isConnected = false
+      }
 
       if (!isConnected) {
-        // Load fallback data for demo
-        setProvasDisponiveis([
-          {
-            id: 1,
-            avaliacao: {
-              id: 1,
-              instrucao: 'Avaliação de Matemática - 1º Bimestre',
-              tipoAvaliacao: { descricao: 'Diagnóstica' },
-              responsavel: { nome: 'Prof. João Silva' }
-            },
-            dataDisponibilizacao: new Date().toISOString(),
-            prazoLimite: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString()
-          }
-        ])
-        setProvasEmAndamento([])
-        setProvasConcluidas([])
-        setStatistics({
-          totalProvas: 1,
-          provasFinalizadas: 0,
-          mediaGeral: 0,
-          ultimaProva: null
-        })
-        setLoading(false)
+        alert('❌ Backend não está rodando!\n\n' +
+              '💡 Para conectar ao backend:\n' +
+              '1. Abra um terminal\n' +
+              '2. Execute: cd backend && mvn spring-boot:run\n' +
+              '3. Aguarde até ver "Started SistemaAvaliacoesApplication"\n' +
+              '4. Clique novamente em "Conectar Backend"')
         return
       }
 
@@ -91,20 +80,18 @@ export default function MinhasProvas() {
       setProvasEmAndamento(emAndamento)
       setProvasConcluidas(concluidas)
       setStatistics(stats)
+
+      alert('✅ Conectado ao backend com sucesso!\n\n' +
+            `📊 Dados carregados:\n` +
+            `• ${disponiveis.length} provas disponíveis\n` +
+            `• ${emAndamento.length} provas em andamento\n` +
+            `• ${concluidas.length} provas concluídas`)
+
     } catch (error) {
       console.error('Erro ao carregar provas:', error)
-      setError('Erro ao carregar dados. Usando modo offline.')
-
-      // Load fallback data on error
-      setProvasDisponiveis([])
-      setProvasEmAndamento([])
-      setProvasConcluidas([])
-      setStatistics({
-        totalProvas: 0,
-        provasFinalizadas: 0,
-        mediaGeral: 0,
-        ultimaProva: null
-      })
+      alert('⚠️ Erro de conexão!\n\n' +
+            'O backend pode estar iniciando ou com problemas.\n' +
+            'Verifique o console do backend para mais detalhes.')
     } finally {
       setLoading(false)
     }
