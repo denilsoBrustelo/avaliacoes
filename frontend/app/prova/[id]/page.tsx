@@ -4,6 +4,7 @@ import { useAuth } from '@/contexts/AuthContext'
 import AplicacaoProva from '@/components/aluno/AplicacaoProva'
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react'
+import { UserRole } from '@/types'
 
 interface ExamPageProps {
   params: {
