@@ -129,10 +129,31 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
   const loadQuestoesAvaliacao = async () => {
     if (avaliacao?.id) {
       try {
+        // Test connection first
+        const isConnected = await apiClient.testConnection()
+
+        if (!isConnected) {
+          console.warn('Backend não disponível - usando dados de exemplo para questões da avaliação')
+          // Set example questions for offline mode
+          setQuestoesSelecionadas([
+            {
+              id: 1,
+              pergunta: 'Qual é o resultado de 5 + 3?',
+              tema: 'Adição',
+              disciplina: { descricao: 'Matemática' },
+              nivelDificuldade: { descricao: 'Fácil' },
+              pontuacao: 1.0
+            }
+          ])
+          return
+        }
+
         const questoes = await AvaliacaoApiService.getQuestions(avaliacao.id)
         setQuestoesSelecionadas(questoes)
       } catch (error) {
-        console.error('Erro ao carregar questões da avaliação:', error)
+        console.warn('Erro ao carregar questões da avaliação - usando modo offline:', error)
+        // Set fallback data
+        setQuestoesSelecionadas([])
       }
     }
   }
