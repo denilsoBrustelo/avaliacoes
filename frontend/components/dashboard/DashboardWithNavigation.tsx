@@ -27,7 +27,7 @@ export default function DashboardWithNavigation() {
       case 'minhas-provas':
         return hasRole(UserRole.ALUNO) ? <MinhasProvas /> : <Dashboard />
       default:
-        return <Dashboard />
+        return <Dashboard onPageChange={setCurrentPage} />
     }
   }
 
