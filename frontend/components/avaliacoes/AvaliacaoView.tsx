@@ -19,29 +19,97 @@ export default function AvaliacaoView({ avaliacao, isOpen, onClose, onEdit }: Av
 
   useEffect(() => {
     if (isOpen && avaliacao?.id) {
-      loadAvaliacaoDetails()
+      // Load demo data instead of automatically connecting to backend
+      setQuestoes([
+        {
+          id: 1,
+          pergunta: 'Qual é o resultado de 5 + 3?',
+          tema: 'Adição',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        },
+        {
+          id: 2,
+          pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
+          tema: 'Subtração',
+          disciplina: { descricao: 'Matemática' },
+          nivelDificuldade: { descricao: 'Fácil' },
+          pontuacao: 1.0
+        }
+      ])
+      setParticipantes([
+        {
+          id: 1,
+          usuario: { nome: 'Ana Silva' },
+          status: 'CONCLUIDO',
+          dataInicio: new Date('2024-01-15T09:00:00').toISOString(),
+          dataFim: new Date('2024-01-15T10:30:00').toISOString(),
+          nota: 8.5
+        },
+        {
+          id: 2,
+          usuario: { nome: 'Carlos Santos' },
+          status: 'EM_ANDAMENTO',
+          dataInicio: new Date('2024-01-15T14:00:00').toISOString(),
+          dataFim: null,
+          nota: null
+        }
+      ])
+      setStatistics({
+        totalParticipantes: 2,
+        participantesConcluidos: 1,
+        participantesEmAndamento: 1,
+        mediaGeral: 8.5,
+        menorNota: 8.5,
+        maiorNota: 8.5
+      })
+      setLoading(false)
     }
   }, [isOpen, avaliacao])
 
   const loadAvaliacaoDetails = async () => {
     if (!avaliacao?.id) return
 
+    setLoading(true)
+
     try {
-      setLoading(true)
+      // Test connection first
+      const isConnected = await apiClient.testConnection()
+
+      if (!isConnected) {
+        alert('❌ Backend não está rodando!\n\n' +
+              '💡 Para conectar ao backend:\n' +
+              '1. Abra um terminal\n' +
+              '2. Execute: cd backend && mvn spring-boot:run\n' +
+              '3. Aguarde até ver "Started SistemaAvaliacoesApplication"\n' +
+              '4. Clique novamente em "Conectar Backend"')
+        setLoading(false)
+        return
+      }
+
       const [questoesData, participantesData, statsData] = await Promise.all([
         AvaliacaoApiService.getQuestions(avaliacao.id),
         ParticipanteApiService.getByEvaluation(avaliacao.id),
         ParticipanteApiService.getStatisticsByEvaluation(avaliacao.id)
       ])
-      
+
       setQuestoes(questoesData)
       setParticipantes(participantesData)
       setStatistics(statsData)
+
+      alert('✅ Dados carregados do backend!\n\n' +
+            `📊 Informações atualizadas:\n` +
+            `• ${questoesData.length} questões\n` +
+            `• ${participantesData.length} participantes`)
+
     } catch (error) {
-      console.error('Erro ao carregar detalhes da avaliação:', error)
-    } finally {
-      setLoading(false)
+      console.warn('Erro ao carregar detalhes da avaliação:', error)
+      alert('⚠️ Erro de conexão!\n\n' +
+            'Mantendo dados de demonstração.')
     }
+
+    setLoading(false)
   }
 
   const getStatusIcon = (status: number) => {
