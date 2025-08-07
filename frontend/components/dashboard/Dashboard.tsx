@@ -256,21 +256,27 @@ export default function Dashboard({ onPageChange }: DashboardProps) {
 
               {hasRole(UserRole.ALUNO) && (
                 <>
-                  <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <button
+                    onClick={() => onPageChange?.('minhas-provas')}
+                    className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-center">
                       <BookOpen className="h-5 w-5 text-green-500 mr-3" />
                       <div>
-                        <p className="font-medium">Fazer Prova</p>
-                        <p className="text-sm text-gray-500">Realizar avaliação disponível</p>
+                        <p className="font-medium">Minhas Provas</p>
+                        <p className="text-sm text-gray-500">Ver e realizar avaliações</p>
                       </div>
                     </div>
                   </button>
-                  <button className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors">
+                  <button
+                    onClick={() => onPageChange?.('minhas-provas')}
+                    className="w-full text-left p-3 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                  >
                     <div className="flex items-center">
                       <CheckCircle className="h-5 w-5 text-blue-500 mr-3" />
                       <div>
                         <p className="font-medium">Ver Resultados</p>
-                        <p className="text-sm text-gray-500">Consultar notas e feedback</p>
+                        <p className="text-sm text-gray-500">Consultar notas e histórico</p>
                       </div>
                     </div>
                   </button>
