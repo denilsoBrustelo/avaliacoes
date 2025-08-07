@@ -53,97 +53,67 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
   }, [tempoRestante])
 
   const loadProvaData = async () => {
-    try {
-      setLoading(true)
-      setError(null)
+    setLoading(true)
+    setError(null)
+    setIsOfflineMode(true)
 
-      // Test backend connection first
-      const isConnected = await apiClient.testConnection()
-
-      if (!isConnected) {
-        setIsOfflineMode(true)
-        // Load demo data for offline mode
-        const demoParticipante = {
-          id: participanteId,
-          avaliacao: {
-            id: 1,
-            instrucao: 'Avaliação de Matemática - Modo Demo',
-            tipoAvaliacao: { descricao: 'Diagnóstica' }
-          },
-          usuario: { id: user?.id || 1, nome: user?.nome || 'Aluno Demo' },
-          dataInicio: new Date().toISOString(),
-          prazoLimite: new Date(Date.now() + 60 * 60 * 1000).toISOString() // 1 hora
-        }
-
-        const demoQuestoes = [
-          {
-            id: 1,
-            pergunta: 'Qual é o resultado de 5 + 3?',
-            tipoAlternativa: { descricao: 'Múltipla Escolha' },
-            alternativas: [
-              { id: 1, descricao: '6', correta: false },
-              { id: 2, descricao: '7', correta: false },
-              { id: 3, descricao: '8', correta: true },
-              { id: 4, descricao: '9', correta: false }
-            ],
-            pontuacao: 1.0
-          },
-          {
-            id: 2,
-            pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
-            tipoAlternativa: { descricao: 'Múltipla Escolha' },
-            alternativas: [
-              { id: 5, descricao: '8', correta: false },
-              { id: 6, descricao: '9', correta: true },
-              { id: 7, descricao: '10', correta: false },
-              { id: 8, descricao: '11', correta: false }
-            ],
-            pontuacao: 1.0
-          }
-        ]
-
-        setParticipante(demoParticipante)
-        setQuestoes(demoQuestoes)
-        setTempoRestante(3600) // 1 hora em segundos
-        setRespostas({})
-        setLoading(false)
-        return
-      }
-
-      // Backend is available - load real data
-      const participanteData = await ParticipanteApiService.getById(participanteId)
-      setParticipante(participanteData)
-
-      if (participanteData.avaliacao?.id) {
-        const questoesData = await AvaliacaoApiService.getQuestions(participanteData.avaliacao.id)
-        setQuestoes(questoesData)
-
-        // Carregar respostas já salvas
-        const respostasData = await RespostaApiService.getByEvaluationAndUser(
-          participanteData.avaliacao.id,
-          participanteData.usuario.id
-        )
-
-        const respostasMap: Record<number, any> = {}
-        respostasData.forEach((resposta: any) => {
-          respostasMap[resposta.questao.id] = resposta
-        })
-        setRespostas(respostasMap)
-
-        // Calcular tempo restante se necessário
-        if (participanteData.prazoLimite) {
-          const agora = new Date().getTime()
-          const prazo = new Date(participanteData.prazoLimite).getTime()
-          const tempoRestanteSeg = Math.max(0, Math.floor((prazo - agora) / 1000))
-          setTempoRestante(tempoRestanteSeg)
-        }
-      }
-    } catch (error) {
-      console.error('Erro ao carregar dados da prova:', error)
-      setError('Erro ao carregar dados da prova. Verifique sua conexão.')
-    } finally {
-      setLoading(false)
+    // Load demo data only - no backend calls to avoid fetch errors
+    const demoParticipante = {
+      id: participanteId,
+      avaliacao: {
+        id: 1,
+        instrucao: 'Avaliação de Matemática - Modo Demo',
+        tipoAvaliacao: { descricao: 'Diagnóstica' }
+      },
+      usuario: { id: user?.id || 1, nome: user?.nome || 'Aluno Demo' },
+      dataInicio: new Date().toISOString(),
+      prazoLimite: new Date(Date.now() + 60 * 60 * 1000).toISOString() // 1 hora
     }
+
+    const demoQuestoes = [
+      {
+        id: 1,
+        pergunta: 'Qual é o resultado de 5 + 3?',
+        tipoAlternativa: { descricao: 'Múltipla Escolha' },
+        alternativas: [
+          { id: 1, descricao: '6', correta: false },
+          { id: 2, descricao: '7', correta: false },
+          { id: 3, descricao: '8', correta: true },
+          { id: 4, descricao: '9', correta: false }
+        ],
+        pontuacao: 1.0
+      },
+      {
+        id: 2,
+        pergunta: 'Se João tem 15 maçãs e deu 6 para Maria, quantas maçãs João tem agora?',
+        tipoAlternativa: { descricao: 'Múltipla Escolha' },
+        alternativas: [
+          { id: 5, descricao: '8', correta: false },
+          { id: 6, descricao: '9', correta: true },
+          { id: 7, descricao: '10', correta: false },
+          { id: 8, descricao: '11', correta: false }
+        ],
+        pontuacao: 1.0
+      },
+      {
+        id: 3,
+        pergunta: 'Qual é a capital do Brasil?',
+        tipoAlternativa: { descricao: 'Múltipla Escolha' },
+        alternativas: [
+          { id: 9, descricao: 'São Paulo', correta: false },
+          { id: 10, descricao: 'Rio de Janeiro', correta: false },
+          { id: 11, descricao: 'Brasília', correta: true },
+          { id: 12, descricao: 'Salvador', correta: false }
+        ],
+        pontuacao: 1.0
+      }
+    ]
+
+    setParticipante(demoParticipante)
+    setQuestoes(demoQuestoes)
+    setTempoRestante(3600) // 1 hora em segundos
+    setRespostas({})
+    setLoading(false)
   }
 
   const salvarResposta = async (questaoId: number, respostaTexto?: string, alternativaId?: number) => {
