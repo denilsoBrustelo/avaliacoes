@@ -21,7 +21,11 @@ interface StatCard {
   color: string
 }
 
-export default function Dashboard() {
+interface DashboardProps {
+  onPageChange?: (page: string) => void
+}
+
+export default function Dashboard({ onPageChange }: DashboardProps) {
   const { user, hasRole } = useAuth()
 
   // Dados mockados para estatísticas
