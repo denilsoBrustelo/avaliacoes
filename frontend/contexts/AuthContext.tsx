@@ -65,6 +65,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const storedUser = localStorage.getItem('user')
     if (storedUser) {
       setUser(JSON.parse(storedUser))
+    } else {
+      // Auto-login para demonstração - usando usuário aluno
+      const alunoUser = mockUsers.find(u => u.roles.includes(UserRole.ALUNO))
+      if (alunoUser) {
+        const userWithoutPassword = { ...alunoUser, senha: '' }
+        setUser(userWithoutPassword)
+        localStorage.setItem('user', JSON.stringify(userWithoutPassword))
+
+        // Gerar token fictício
+        const fakeToken = `mock-token-${alunoUser.id}-${Date.now()}`
+        apiClient.setToken(fakeToken)
+      }
     }
     setIsLoading(false)
   }, [])
