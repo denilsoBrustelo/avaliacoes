@@ -76,7 +76,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
       alert('⚠️ Erro de conexão!\n\n' +
             'O backend pode estar iniciando ou com problemas.\n' +
             'Verifique o console do backend para mais detalhes.')
-    } finally {
+
       setLoading(false)
     }
   }
