@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { AvaliacaoApiService, RespostaApiService, ParticipanteApiService } from '@/lib/api'
+import { useRouter } from 'next/navigation'
+import { useAuth } from '@/contexts/AuthContext'
+import { AvaliacaoApiService, RespostaApiService, ParticipanteApiService, apiClient } from '@/lib/api'
 import { Clock, AlertCircle, CheckCircle, ChevronLeft, ChevronRight, Flag, Send } from 'lucide-react'
 
 interface AplicacaoProvaProps {
@@ -9,6 +11,8 @@ interface AplicacaoProvaProps {
 }
 
 export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) {
+  const { user } = useAuth()
+  const router = useRouter()
   const [participante, setParticipante] = useState<any>(null)
   const [questoes, setQuestoes] = useState<any[]>([])
   const [questaoAtual, setQuestaoAtual] = useState(0)
@@ -17,11 +21,15 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
   const [loading, setLoading] = useState(true)
   const [salvandoResposta, setSalvandoResposta] = useState(false)
   const [showConfirmacao, setShowConfirmacao] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [isOfflineMode, setIsOfflineMode] = useState(false)
   const intervalRef = useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
-    loadProvaData()
-  }, [participanteId])
+    if (user) {
+      loadProvaData()
+    }
+  }, [participanteId, user])
 
   useEffect(() => {
     // Timer de tempo restante (opcional - pode ser configurado)
