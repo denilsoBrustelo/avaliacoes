@@ -149,23 +149,27 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
   const salvarResposta = async (questaoId: number, respostaTexto?: string, alternativaId?: number) => {
     try {
       setSalvandoResposta(true)
-      await RespostaApiService.saveAnswer({
-        questaoId,
-        respostaTexto,
-        alternativaId
-      })
-      
-      // Atualizar resposta local
+
+      // Atualizar resposta local primeiro
       const novaResposta = {
         questao: { id: questaoId },
         resposta: respostaTexto,
         questaoAlternativa: alternativaId ? { id: alternativaId } : null
       }
-      
+
       setRespostas(prev => ({
         ...prev,
         [questaoId]: novaResposta
       }))
+
+      // Salvar no backend apenas se conectado
+      if (!isOfflineMode) {
+        await RespostaApiService.saveAnswer({
+          questaoId,
+          respostaTexto,
+          alternativaId
+        })
+      }
     } catch (error) {
       console.error('Erro ao salvar resposta:', error)
     } finally {
