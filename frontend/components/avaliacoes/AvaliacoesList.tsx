@@ -32,11 +32,11 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   }, [])
 
   const loadData = async () => {
-    try {
-      setLoading(true)
-      setError(null)
+    setLoading(true)
+    setError(null)
 
-      // Test backend connection first
+    try {
+      // Test backend connection with error handling
       const isConnected = await apiClient.testConnection()
 
       if (!isConnected) {
@@ -48,7 +48,7 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
               '3. Aguarde até ver "Started SistemaAvaliacoesApplication"\n' +
               '4. Clique novamente em "Conectar Backend"')
 
-        // Keep current fallback data
+        setLoading(false)
         return
       }
 
