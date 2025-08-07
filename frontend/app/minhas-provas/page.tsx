@@ -7,17 +7,17 @@ import { useEffect } from 'react'
 import { UserRole } from '@/types'
 
 export default function MinhasProvasPage() {
-  const { user } = useAuth()
+  const { user, hasRole, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     // Redirect if not authenticated or not a student
-    if (user && user.role !== UserRole.ALUNO) {
+    if (user && !hasRole(UserRole.ALUNO)) {
       router.push('/dashboard')
     }
-  }, [user, router])
+  }, [user, hasRole, router])
 
-  if (!user) {
+  if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -27,7 +27,17 @@ export default function MinhasProvasPage() {
     )
   }
 
-  if (user.role !== UserRole.ALUNO) {
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-gray-600">Faça login para acessar esta página.</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!hasRole(UserRole.ALUNO)) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
