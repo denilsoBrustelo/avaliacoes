@@ -12,7 +12,7 @@ export default function MinhasProvasPage() {
 
   useEffect(() => {
     // Redirect if not authenticated or not a student
-    if (user && user.role !== 'ALUNO') {
+    if (user && user.role !== UserRole.ALUNO) {
       router.push('/dashboard')
     }
   }, [user, router])
@@ -27,7 +27,7 @@ export default function MinhasProvasPage() {
     )
   }
 
-  if (user.role !== 'ALUNO') {
+  if (user.role !== UserRole.ALUNO) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
