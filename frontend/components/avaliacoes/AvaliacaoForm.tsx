@@ -73,7 +73,9 @@ export default function AvaliacaoForm({ avaliacao, isOpen, onClose, onSave }: Av
         tipoAvaliacaoId: avaliacao.tipoAvaliacao?.id?.toString() || '',
         instrucao: avaliacao.instrucao || ''
       })
-      loadQuestoesAvaliacao()
+      // Load questions only when user explicitly wants to connect to backend
+      // For now, just set empty array - user can load via backend connection
+      setQuestoesSelecionadas([])
     } else {
       setFormData({
         tipoAvaliacaoId: '',
