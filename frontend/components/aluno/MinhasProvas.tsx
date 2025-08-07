@@ -45,18 +45,12 @@ export default function MinhasProvas() {
   }, [user])
 
   const loadMinhasProvas = async () => {
-    try {
-      setLoading(true)
-      setError(null)
+    setLoading(true)
+    setError(null)
 
-      // Test backend connection with better error handling
-      let isConnected = false
-      try {
-        isConnected = await apiClient.testConnection()
-      } catch (connectionError) {
-        console.warn('Connection test failed:', connectionError)
-        isConnected = false
-      }
+    try {
+      // Try to test connection without throwing errors
+      const isConnected = await apiClient.testConnection()
 
       if (!isConnected) {
         alert('❌ Backend não está rodando!\n\n' +
@@ -65,6 +59,7 @@ export default function MinhasProvas() {
               '2. Execute: cd backend && mvn spring-boot:run\n' +
               '3. Aguarde até ver "Started SistemaAvaliacoesApplication"\n' +
               '4. Clique novamente em "Conectar Backend"')
+        setLoading(false)
         return
       }
 
@@ -88,13 +83,13 @@ export default function MinhasProvas() {
             `• ${concluidas.length} provas concluídas`)
 
     } catch (error) {
-      console.error('Erro ao carregar provas:', error)
+      console.warn('Connection failed, staying in offline mode:', error)
       alert('⚠️ Erro de conexão!\n\n' +
             'O backend pode estar iniciando ou com problemas.\n' +
-            'Verifique o console do backend para mais detalhes.')
-    } finally {
-      setLoading(false)
+            'Mantendo modo offline.')
     }
+
+    setLoading(false)
   }
 
   const iniciarProva = async (participanteId: number) => {
