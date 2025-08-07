@@ -289,13 +289,25 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
       <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div>
-              <h1 className="text-lg font-medium text-gray-900">
-                {participante.avaliacao?.tipoAvaliacao?.descricao}
-              </h1>
-              <p className="text-sm text-gray-500">
-                Questão {questaoAtual + 1} de {questoes.length}
-              </p>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => router.push('/minhas-provas')}
+                className="flex items-center text-gray-600 hover:text-gray-900"
+                title="Voltar para Minhas Provas"
+              >
+                <ChevronLeft className="h-5 w-5" />
+                <span className="hidden sm:block">Voltar</span>
+              </button>
+
+              <div>
+                <h1 className="text-lg font-medium text-gray-900">
+                  {participante.avaliacao?.tipoAvaliacao?.descricao}
+                  {isOfflineMode && <span className="text-orange-600 text-sm ml-2">(Modo Demo)</span>}
+                </h1>
+                <p className="text-sm text-gray-500">
+                  Questão {questaoAtual + 1} de {questoes.length}
+                </p>
+              </div>
             </div>
             
             <div className="flex items-center space-x-4">
