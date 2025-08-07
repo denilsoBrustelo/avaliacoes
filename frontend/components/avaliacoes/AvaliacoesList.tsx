@@ -19,14 +19,47 @@ export default function AvaliacoesList({ onEdit, onView, onNew }: AvaliacoesList
   const [statistics, setStatistics] = useState<any>(null)
   const [error, setError] = useState<Error | null>(null)
 
-  // Load fallback data immediately instead of trying to connect to backend
+  // Load demo data immediately for offline mode
   useEffect(() => {
-    setAvaliacoes([])
+    setAvaliacoes([
+      {
+        id: 1,
+        instrucao: 'Avaliação de Matemática - 1º Bimestre - Operações básicas e resolução de problemas',
+        tipoAvaliacao: { descricao: 'Diagnóstica' },
+        responsavel: { nome: 'Prof. João Silva' },
+        statusAvaliacao: 1, // Aprovado
+        dataCadastro: new Date('2024-01-15').toISOString()
+      },
+      {
+        id: 2,
+        instrucao: 'Avaliação de Português - Interpretação de texto e gramática',
+        tipoAvaliacao: { descricao: 'Processual' },
+        responsavel: { nome: 'Profa. Maria Santos' },
+        statusAvaliacao: 0, // Pendente
+        dataCadastro: new Date('2024-01-20').toISOString()
+      },
+      {
+        id: 3,
+        instrucao: 'Avaliação de Ciências - Sistema digestivo e respiratório',
+        tipoAvaliacao: { descricao: 'Final de Ciclo' },
+        responsavel: { nome: 'Prof. Carlos Lima' },
+        statusAvaliacao: 1, // Aprovado
+        dataCadastro: new Date('2024-01-25').toISOString()
+      },
+      {
+        id: 4,
+        instrucao: 'Avaliação de História - Brasil Colonial período de exploração',
+        tipoAvaliacao: { descricao: 'Certificadora' },
+        responsavel: { nome: 'Profa. Ana Costa' },
+        statusAvaliacao: 2, // Cancelado
+        dataCadastro: new Date('2024-01-30').toISOString()
+      }
+    ])
     setStatistics({
-      totalAvaliacoes: 0,
-      avaliacoesAprovadas: 0,
-      avaliacoesPendentes: 0,
-      avaliacoesCanceladas: 0
+      totalAvaliacoes: 4,
+      avaliacoesAprovadas: 2,
+      avaliacoesPendentes: 1,
+      avaliacoesCanceladas: 1
     })
     setLoading(false)
   }, [])
