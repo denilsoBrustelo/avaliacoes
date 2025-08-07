@@ -204,19 +204,27 @@ export default function AplicacaoProva({ participanteId }: AplicacaoProvaProps) 
 
   const finalizarProva = async () => {
     try {
-      await ParticipanteApiService.finishExam(participanteId)
-      // Redirecionar para página de sucesso
-      window.location.href = '/minhas-provas?finalizada=true'
+      if (!isOfflineMode) {
+        await ParticipanteApiService.finishExam(participanteId)
+      }
+
+      alert('Prova finalizada com sucesso!')
+      router.push('/minhas-provas')
     } catch (error) {
       console.error('Erro ao finalizar prova:', error)
+      alert('Erro ao finalizar prova. Retornando para Minhas Provas.')
+      router.push('/minhas-provas')
     }
   }
 
   const finalizarProvaAutomaticamente = async () => {
     try {
-      await ParticipanteApiService.finishExam(participanteId)
+      if (!isOfflineMode) {
+        await ParticipanteApiService.finishExam(participanteId)
+      }
+
       alert('Tempo esgotado! A prova foi finalizada automaticamente.')
-      window.location.href = '/minhas-provas'
+      router.push('/minhas-provas')
     } catch (error) {
       console.error('Erro ao finalizar prova automaticamente:', error)
     }
