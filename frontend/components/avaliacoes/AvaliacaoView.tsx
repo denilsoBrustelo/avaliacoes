@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { AvaliacaoApiService, ParticipanteApiService } from '@/lib/api'
+import { AvaliacaoApiService, ParticipanteApiService, apiClient } from '@/lib/api'
 import { X, Edit, FileText, Users, Calendar, CheckCircle, XCircle, Clock, User } from 'lucide-react'
 
 interface AvaliacaoViewProps {
