@@ -98,28 +98,8 @@ export default function MinhasProvas() {
   }
 
   const iniciarProva = async (participanteId: number) => {
-    try {
-      let isConnected = false
-      try {
-        isConnected = await apiClient.testConnection()
-      } catch (connectionError) {
-        console.warn('Connection test failed during exam start:', connectionError)
-        isConnected = false
-      }
-
-      if (!isConnected) {
-        // Go directly to exam in offline mode
-        router.push(`/prova/${participanteId}`)
-        return
-      }
-
-      await ParticipanteApiService.startExam(participanteId)
-      router.push(`/prova/${participanteId}`)
-    } catch (error) {
-      console.error('Erro ao iniciar prova:', error)
-      // Still allow starting exam in offline mode
-      router.push(`/prova/${participanteId}`)
-    }
+    // Go directly to exam - let the exam page handle backend connection
+    router.push(`/prova/${participanteId}`)
   }
 
   const continuarProva = (participante: any) => {
