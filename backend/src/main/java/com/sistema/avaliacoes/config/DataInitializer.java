@@ -81,10 +81,24 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeTiposAvaliacoes() {
         if (tipoAvaliacaoRepository.count() == 0) {
-            tipoAvaliacaoRepository.save(new TipoAvaliacao("Diagnóstica"));
-            tipoAvaliacaoRepository.save(new TipoAvaliacao("Processual"));
-            tipoAvaliacaoRepository.save(new TipoAvaliacao("Final de Ciclo"));
-            tipoAvaliacaoRepository.save(new TipoAvaliacao("Certificadora"));
+            try {
+                logger.debug("Criando tipos de avaliação padrão...");
+
+                tipoAvaliacaoRepository.save(new TipoAvaliacao("Diagnóstica"));
+                tipoAvaliacaoRepository.save(new TipoAvaliacao("Processual"));
+                tipoAvaliacaoRepository.save(new TipoAvaliacao("Final de Ciclo"));
+                tipoAvaliacaoRepository.save(new TipoAvaliacao("Certificadora"));
+
+                logger.debug("📝 Tipos de avaliação criados com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Tipos de avaliação já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar tipos de avaliação: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Tipos de avaliação já existem no sistema, pulando inicialização");
         }
     }
 
