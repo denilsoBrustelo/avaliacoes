@@ -104,11 +104,25 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeTiposAlternativas() {
         if (tipoAlternativaRepository.count() == 0) {
-            tipoAlternativaRepository.save(new TipoAlternativa("Dissertativa"));
-            tipoAlternativaRepository.save(new TipoAlternativa("Múltipla Escolha"));
-            tipoAlternativaRepository.save(new TipoAlternativa("Texto de Referência"));
-            tipoAlternativaRepository.save(new TipoAlternativa("Imagem de Referência"));
-            tipoAlternativaRepository.save(new TipoAlternativa("Imagem nas Alternativas"));
+            try {
+                logger.debug("Criando tipos de alternativa padrão...");
+
+                tipoAlternativaRepository.save(new TipoAlternativa("Dissertativa"));
+                tipoAlternativaRepository.save(new TipoAlternativa("Múltipla Escolha"));
+                tipoAlternativaRepository.save(new TipoAlternativa("Texto de Referência"));
+                tipoAlternativaRepository.save(new TipoAlternativa("Imagem de Referência"));
+                tipoAlternativaRepository.save(new TipoAlternativa("Imagem nas Alternativas"));
+
+                logger.debug("📋 Tipos de alternativa criados com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Tipos de alternativa já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar tipos de alternativa: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Tipos de alternativa já existem no sistema, pulando inicialização");
         }
     }
 
