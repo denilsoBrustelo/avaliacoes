@@ -1,6 +1,7 @@
 package com.sistema.avaliacoes.config;
 
 import com.sistema.avaliacoes.model.entity.*;
+import com.sistema.avaliacoes.model.enums.StatusEnum;
 import com.sistema.avaliacoes.model.enums.UserRole;
 import com.sistema.avaliacoes.repository.*;
 import org.slf4j.Logger;
@@ -66,7 +67,7 @@ public class DataInitializer implements CommandLineRunner {
             logger.info("✅ Níveis de dificuldade inicializados");
 
             initializeSeries();
-            logger.info("�� Séries inicializadas");
+            logger.info("✅ Séries inicializadas");
 
             initializeQuestoesSample();
             logger.info("✅ Questões sample inicializadas");
