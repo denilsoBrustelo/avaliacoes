@@ -182,15 +182,29 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeSeries() {
         if (serieRepository.count() == 0) {
-            serieRepository.save(new Serie("1º Ano"));
-            serieRepository.save(new Serie("2º Ano"));
-            serieRepository.save(new Serie("3º Ano"));
-            serieRepository.save(new Serie("4º Ano"));
-            serieRepository.save(new Serie("5º Ano"));
-            serieRepository.save(new Serie("6º Ano"));
-            serieRepository.save(new Serie("7º Ano"));
-            serieRepository.save(new Serie("8º Ano"));
-            serieRepository.save(new Serie("9º Ano"));
+            try {
+                logger.debug("Criando séries padrão...");
+
+                serieRepository.save(new Serie("1º Ano", "1ANO"));
+                serieRepository.save(new Serie("2º Ano", "2ANO"));
+                serieRepository.save(new Serie("3º Ano", "3ANO"));
+                serieRepository.save(new Serie("4º Ano", "4ANO"));
+                serieRepository.save(new Serie("5º Ano", "5ANO"));
+                serieRepository.save(new Serie("6º Ano", "6ANO"));
+                serieRepository.save(new Serie("7º Ano", "7ANO"));
+                serieRepository.save(new Serie("8º Ano", "8ANO"));
+                serieRepository.save(new Serie("9º Ano", "9ANO"));
+
+                logger.debug("🎓 Séries criadas com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Séries já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar séries: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Séries já existem no sistema, pulando inicialização");
         }
     }
 
