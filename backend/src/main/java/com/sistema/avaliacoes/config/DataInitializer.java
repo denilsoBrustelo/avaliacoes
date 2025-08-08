@@ -47,13 +47,36 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        initializeTiposAvaliacoes();
-        initializeTiposAlternativas();
-        initializeUsuarios();
-        initializeDisciplinas();
-        initializeNiveisDificuldade();
-        initializeSeries();
-        initializeQuestoesSample();
+        try {
+            logger.info("��� Iniciando inicialização de dados do sistema...");
+
+            initializeTiposAvaliacoes();
+            logger.info("✅ Tipos de avaliação inicializados");
+
+            initializeTiposAlternativas();
+            logger.info("✅ Tipos de alternativa inicializados");
+
+            initializeUsuarios();
+            logger.info("✅ Usuários inicializados");
+
+            initializeDisciplinas();
+            logger.info("✅ Disciplinas inicializadas");
+
+            initializeNiveisDificuldade();
+            logger.info("✅ Níveis de dificuldade inicializados");
+
+            initializeSeries();
+            logger.info("✅ Séries inicializadas");
+
+            initializeQuestoesSample();
+            logger.info("✅ Questões sample inicializadas");
+
+            logger.info("🎉 Inicialização de dados concluída com sucesso!");
+
+        } catch (Exception e) {
+            logger.error("❌ Erro durante inicialização de dados: {}", e.getMessage(), e);
+            throw e;
+        }
     }
 
     private void initializeTiposAvaliacoes() {
