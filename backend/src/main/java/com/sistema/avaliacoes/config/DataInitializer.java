@@ -202,9 +202,23 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeNiveisDificuldade() {
         if (nivelDificuldadeRepository.count() == 0) {
-            nivelDificuldadeRepository.save(new NivelDificuldade("Fácil"));
-            nivelDificuldadeRepository.save(new NivelDificuldade("Médio"));
-            nivelDificuldadeRepository.save(new NivelDificuldade("Difícil"));
+            try {
+                logger.debug("Criando níveis de dificuldade padrão...");
+
+                nivelDificuldadeRepository.save(new NivelDificuldade("Fácil"));
+                nivelDificuldadeRepository.save(new NivelDificuldade("Médio"));
+                nivelDificuldadeRepository.save(new NivelDificuldade("Difícil"));
+
+                logger.debug("⭐ Níveis de dificuldade criados com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Níveis de dificuldade já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar níveis de dificuldade: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Níveis de dificuldade já existem no sistema, pulando inicialização");
         }
     }
 
