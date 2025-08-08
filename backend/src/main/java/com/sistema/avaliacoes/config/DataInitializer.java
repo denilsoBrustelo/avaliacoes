@@ -48,7 +48,7 @@ public class DataInitializer implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         try {
-            logger.info("��� Iniciando inicialização de dados do sistema...");
+            logger.info("🚀 Iniciando inicialização de dados do sistema...");
 
             initializeTiposAvaliacoes();
             logger.info("✅ Tipos de avaliação inicializados");
@@ -100,32 +100,50 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeUsuarios() {
         if (usuarioRepository.count() == 0) {
-            // Administrador
-            Usuario admin = new Usuario();
-            admin.setCpf("12345678901");
-            admin.setNome("Administrador Sistema");
-            admin.setEmail("admin@sistema.com");
-            admin.setSenha(passwordEncoder.encode("admin123"));
-            admin.setRoles(Set.of(UserRole.ROLE_ADMIN));
-            usuarioRepository.save(admin);
+            try {
+                logger.debug("Criando usuários padrão do sistema...");
 
-            // Professor
-            Usuario professor = new Usuario();
-            professor.setCpf("98765432109");
-            professor.setNome("Professor João Silva");
-            professor.setEmail("professor@sistema.com");
-            professor.setSenha(passwordEncoder.encode("prof123"));
-            professor.setRoles(Set.of(UserRole.ROLE_PROFESSOR));
-            usuarioRepository.save(professor);
+                // Administrador
+                Usuario admin = new Usuario();
+                admin.setCpf("12345678901");
+                admin.setNome("Administrador Sistema");
+                admin.setEmail("admin@sistema.com");
+                admin.setSenha(passwordEncoder.encode("admin123"));
+                admin.setRoles(Set.of(UserRole.ROLE_ADMIN));
+                admin.setStatus(true);
+                usuarioRepository.save(admin);
+                logger.debug("👤 Usuário admin criado com sucesso");
 
-            // Aluno
-            Usuario aluno = new Usuario();
-            aluno.setCpf("11122233344");
-            aluno.setNome("Aluno Maria Santos");
-            aluno.setEmail("aluno@sistema.com");
-            aluno.setSenha(passwordEncoder.encode("aluno123"));
-            aluno.setRoles(Set.of(UserRole.ROLE_ALUNO));
-            usuarioRepository.save(aluno);
+                // Professor
+                Usuario professor = new Usuario();
+                professor.setCpf("98765432109");
+                professor.setNome("Professor João Silva");
+                professor.setEmail("professor@sistema.com");
+                professor.setSenha(passwordEncoder.encode("prof123"));
+                professor.setRoles(Set.of(UserRole.ROLE_PROFESSOR));
+                professor.setStatus(true);
+                usuarioRepository.save(professor);
+                logger.debug("👨‍🏫 Usuário professor criado com sucesso");
+
+                // Aluno
+                Usuario aluno = new Usuario();
+                aluno.setCpf("11122233344");
+                aluno.setNome("Aluno Maria Santos");
+                aluno.setEmail("aluno@sistema.com");
+                aluno.setSenha(passwordEncoder.encode("aluno123"));
+                aluno.setRoles(Set.of(UserRole.ROLE_ALUNO));
+                aluno.setStatus(true);
+                usuarioRepository.save(aluno);
+                logger.debug("👩‍🎓 Usuário aluno criado com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Dados de usuários já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar usuários padrão: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Usuários já existem no sistema, pulando inicialização");
         }
     }
 
