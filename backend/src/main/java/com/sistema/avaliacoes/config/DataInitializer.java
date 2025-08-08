@@ -149,12 +149,26 @@ public class DataInitializer implements CommandLineRunner {
 
     private void initializeDisciplinas() {
         if (disciplinaRepository.count() == 0) {
-            disciplinaRepository.save(new Disciplina("Matemática"));
-            disciplinaRepository.save(new Disciplina("Português"));
-            disciplinaRepository.save(new Disciplina("História"));
-            disciplinaRepository.save(new Disciplina("Geografia"));
-            disciplinaRepository.save(new Disciplina("Ciências"));
-            disciplinaRepository.save(new Disciplina("Inglês"));
+            try {
+                logger.debug("Criando disciplinas padrão...");
+
+                disciplinaRepository.save(new Disciplina("Matemática", "MAT"));
+                disciplinaRepository.save(new Disciplina("Português", "POR"));
+                disciplinaRepository.save(new Disciplina("História", "HIS"));
+                disciplinaRepository.save(new Disciplina("Geografia", "GEO"));
+                disciplinaRepository.save(new Disciplina("Ciências", "CIE"));
+                disciplinaRepository.save(new Disciplina("Inglês", "ING"));
+
+                logger.debug("📚 Disciplinas criadas com sucesso");
+
+            } catch (DataIntegrityViolationException e) {
+                logger.warn("⚠️ Disciplinas já existem, pulando criação");
+            } catch (Exception e) {
+                logger.error("❌ Erro ao criar disciplinas: {}", e.getMessage(), e);
+                throw e;
+            }
+        } else {
+            logger.debug("Disciplinas já existem no sistema, pulando inicialização");
         }
     }
 
