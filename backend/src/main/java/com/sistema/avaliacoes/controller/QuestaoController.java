@@ -28,6 +28,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/questoes")
 @Tag(name = "Questões", description = "Operações relacionadas às questões do sistema")
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin(origins = "http://localhost:3000")
 public class QuestaoController {
 
