@@ -8,6 +8,7 @@ import com.sistema.avaliacoes.model.enums.StatusEnum;
 import com.sistema.avaliacoes.service.QuestaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
