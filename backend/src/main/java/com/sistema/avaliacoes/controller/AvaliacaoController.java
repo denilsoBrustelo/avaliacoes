@@ -20,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/avaliacoes")
 @Tag(name = "Avaliações", description = "Operações relacionadas às avaliações")
+@SecurityRequirement(name = "Bearer Authentication")
 @CrossOrigin(origins = "http://localhost:3000")
 public class AvaliacaoController {
 
